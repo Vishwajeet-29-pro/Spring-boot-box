@@ -17,7 +17,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(ProductRequest productRequest) {
-        return null;
+        Product savedProduct = productRepository.save(ProductRequest.toEntity(productRequest));
+        return ProductResponse.toProductResponse(savedProduct);
     }
 
     @Override
