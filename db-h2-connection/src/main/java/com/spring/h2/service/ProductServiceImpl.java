@@ -23,7 +23,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProduct() {
-        return List.of();
+        List<Product> productList = productRepository.findAll();
+        return productList.stream()
+                .map(ProductResponse::toProductResponse)
+                .toList();
     }
 
     @Override
