@@ -31,7 +31,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProductById(int productId) {
-        return null;
+        Product product = productRepository.getReferenceById(productId);
+        return ProductResponse.toProductResponse(product);
     }
 
     @Override
