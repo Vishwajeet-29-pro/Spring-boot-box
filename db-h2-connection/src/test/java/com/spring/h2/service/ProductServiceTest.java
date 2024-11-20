@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,5 +47,15 @@ class ProductServiceTest {
 
         assertNotNull(productResponse);
         assertEquals("Mobile", productResponse.productName());
+    }
+
+    @Test
+    public void get_all_should_return_product_list() {
+        when(productRepository.findAll()).thenReturn(Collections.singletonList(product));
+
+        List<ProductResponse> productResponseList = productService.getAllProduct();
+
+        assertEquals(1, productResponseList.size());
+        assertEquals("Mobile", productResponseList.getFirst().productName());
     }
 }
