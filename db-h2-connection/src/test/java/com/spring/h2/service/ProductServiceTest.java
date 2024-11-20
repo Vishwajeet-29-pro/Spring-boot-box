@@ -67,4 +67,16 @@ class ProductServiceTest {
 
         assertEquals("Mobile", productResponse.productName());
     }
+
+    @Test
+    public void update_by_id_should_update_product_return_updated_product() {
+        ProductRequest productRequest = new ProductRequest("Mobile","Mobile under 20000",19999, 90);
+        when(productRepository.getReferenceById(any(Integer.class))).thenReturn(product);
+        when(productRepository.save(any(Product.class))).thenReturn(product);
+
+        product.setProductQuantity(90);
+
+        ProductResponse updatedProduct = productService.updateProductById(product.getId(), productRequest);
+        assertEquals(90, updatedProduct.productQuantity());
+    }
 }
