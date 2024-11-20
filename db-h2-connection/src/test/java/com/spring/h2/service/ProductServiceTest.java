@@ -58,4 +58,13 @@ class ProductServiceTest {
         assertEquals(1, productResponseList.size());
         assertEquals("Mobile", productResponseList.getFirst().productName());
     }
+
+    @Test
+    public void get_by_id_should_return_one_product() {
+        when(productRepository.getReferenceById(any(Integer.class))).thenReturn(product);
+
+        ProductResponse productResponse = productService.getProductById(product.getId());
+
+        assertEquals("Mobile", productResponse.productName());
+    }
 }
