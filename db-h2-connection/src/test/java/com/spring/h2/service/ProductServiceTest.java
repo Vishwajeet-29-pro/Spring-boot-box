@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -78,5 +78,16 @@ class ProductServiceTest {
 
         ProductResponse updatedProduct = productService.updateProductById(product.getId(), productRequest);
         assertEquals(90, updatedProduct.productQuantity());
+    }
+
+    @Test
+    public void delete_by_id_should_delete_product() {
+        int productId = 1;
+        when(productRepository.existsById(productId)).thenReturn(true);
+
+        productService.deleteProductById(productId);
+
+        verify(productRepository, times(1)).deleteById(productId);
+
     }
 }
