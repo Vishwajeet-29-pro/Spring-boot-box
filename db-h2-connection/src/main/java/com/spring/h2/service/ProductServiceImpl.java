@@ -49,6 +49,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductById(int id) {
-
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException("Product not found");
+        }
+        productRepository.deleteById(id);
     }
 }
