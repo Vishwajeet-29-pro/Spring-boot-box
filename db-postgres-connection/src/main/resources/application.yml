@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    jdbcUrl: jdbc:postgresql://localhost:5432/springbox
+    username: myuser
+    password: mypassword
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      max-pool-size: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+flyway:
+  enabled: true
+  url: jdbc:postgresql://localhost:5432/springbox
+  user: myuser
+  password: mypassword
+  schemas:
+    - public
+  locations:
+    - classpath:db/migration
+  baseline-on-migrate: true
