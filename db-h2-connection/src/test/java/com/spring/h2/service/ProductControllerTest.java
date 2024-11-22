@@ -13,8 +13,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,6 +51,18 @@ public class ProductControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.productName").value("Laptop"))
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void get_all_should_return_list_of_all_product() throws Exception {
+        when(productService.getAllProduct()).thenReturn(Collections.singletonList(productResponse));
+
+        mockMvc.perform(get("/products")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$.[0].id").value(1))
                 .andReturn().getResponse().getContentAsString();
     }
 }
