@@ -65,4 +65,17 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.[0].id").value(1))
                 .andReturn().getResponse().getContentAsString();
     }
+
+    @Test
+    public void get_by_id_should_return_single_product_with_given_id() throws Exception {
+        int productId = 1;
+        when(productService.getProductById(productId)).thenReturn(productResponse);
+
+        mockMvc.perform(get("/products/{id}", productId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(productId))
+                .andExpect(jsonPath("$.productName").value("Laptop"))
+                .andReturn().getResponse().getContentAsString();
+    }
 }
