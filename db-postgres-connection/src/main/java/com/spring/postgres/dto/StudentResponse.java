@@ -1,4 +1,4 @@
-package com.spring.postgres;
+package com.spring.postgres.dto;
 
 import com.spring.postgres.model.Student;
 import lombok.AllArgsConstructor;
