@@ -1,5 +1,6 @@
 package com.spring.h2.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.h2.dto.ProductRequest;
 import com.spring.h2.dto.ProductResponse;
@@ -16,9 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -77,5 +78,21 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.id").value(productId))
                 .andExpect(jsonPath("$.productName").value("Laptop"))
                 .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void update_by_id_should_update_product_and_return_product() throws Exception {
+        int productId = 1;
+        ProductRequest updateRequest = new ProductRequest("Updated Laptop", "Updated description", 1800.0, 8);
+        ProductResponse updatedProductResponse = new ProductResponse(productId, "Updated Laptop", "Updated description", 1800.0, 8);
+
+        when(productService.updateProductById(eq(productId), any(ProductRequest.class))).thenReturn(updatedProductResponse);
+
+        mockMvc.perform(put("/products/{id}", productId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(updateRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(productId))
+                .andExpect(jsonPath("$.productName").value("Updated Laptop"));
     }
 }
