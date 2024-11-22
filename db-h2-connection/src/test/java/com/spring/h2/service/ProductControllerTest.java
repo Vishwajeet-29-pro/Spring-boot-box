@@ -103,7 +103,7 @@ public class ProductControllerTest {
 
         doNothing().when(productService).deleteProductById(productId);
 
-        mockMvc.perform(delete("/product/{id}", productId))
+        mockMvc.perform(delete("/products/{id}", productId))
                 .andExpect(status().isNoContent());
     }
 }
