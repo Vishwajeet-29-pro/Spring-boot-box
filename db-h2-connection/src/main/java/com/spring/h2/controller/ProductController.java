@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -19,6 +21,12 @@ public class ProductController {
     public ResponseEntity<ProductResponse> saveProduct(@RequestBody ProductRequest productRequest) {
         ProductResponse response = productService.createProduct(productRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        List<ProductResponse> productResponseList = productService.getAllProduct();
+        return new ResponseEntity<>(productResponseList, HttpStatus.OK);
     }
 
 }
