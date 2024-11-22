@@ -1,6 +1,6 @@
 spring:
   datasource:
-    jdbcUrl: jdbc:postgresql://localhost:5432/springbox
+    url: jdbc:postgresql://localhost:5432/springbox
     username: myuser
     password: mypassword
     driver-class-name: org.postgresql.Driver
