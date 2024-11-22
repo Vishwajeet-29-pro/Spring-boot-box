@@ -44,7 +44,7 @@ class ProductServiceTest {
         ProductResponse productResponse = productService.createProduct(productRequest);
 
         assertNotNull(productResponse);
-        assertEquals("Mobile", productResponse.productName());
+        assertEquals("Mobile", productResponse.getProductName());
     }
 
     @Test
@@ -54,7 +54,7 @@ class ProductServiceTest {
         List<ProductResponse> productResponseList = productService.getAllProduct();
 
         assertEquals(1, productResponseList.size());
-        assertEquals("Mobile", productResponseList.getFirst().productName());
+        assertEquals("Mobile", productResponseList.getFirst().getProductName());
     }
 
     @Test
@@ -63,7 +63,7 @@ class ProductServiceTest {
 
         ProductResponse productResponse = productService.getProductById(product.getId());
 
-        assertEquals("Mobile", productResponse.productName());
+        assertEquals("Mobile", productResponse.getProductName());
     }
 
     @Test
@@ -75,7 +75,7 @@ class ProductServiceTest {
         product.setProductQuantity(90);
 
         ProductResponse updatedProduct = productService.updateProductById(product.getId(), productRequest);
-        assertEquals(90, updatedProduct.productQuantity());
+        assertEquals(90, updatedProduct.getProductQuantity());
     }
 
     @Test
