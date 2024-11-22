@@ -18,6 +18,7 @@ import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -94,5 +95,15 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(productId))
                 .andExpect(jsonPath("$.productName").value("Updated Laptop"));
+    }
+
+    @Test
+    public void delete_by_id_should_remove_product_and_return_204() throws Exception {
+        int productId = 1;
+
+        doNothing().when(productService).deleteProductById(productId);
+
+        mockMvc.perform(delete("/product/{id}", productId))
+                .andExpect(status().isNoContent());
     }
 }
