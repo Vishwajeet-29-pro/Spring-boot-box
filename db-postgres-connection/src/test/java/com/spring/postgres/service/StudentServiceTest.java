@@ -30,6 +30,7 @@ class StudentServiceTest {
     public void setup() {
         studentService = new StudentServiceImpl(studentRepository);
         student = new Student();
+        student.setId(1); // Simulate auto-incremented id for test purposes
         student.setStudentName("Vishwajeet Kotkar");
         student.setEmail("vishwajeet.kotkar@springbox.com");
         student.setAge(24);
