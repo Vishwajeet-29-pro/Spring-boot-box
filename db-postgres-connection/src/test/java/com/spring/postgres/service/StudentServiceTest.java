@@ -65,4 +65,18 @@ class StudentServiceTest {
         assertNotNull(studentResponse);
         assertEquals("Vishwajeet Kotkar", studentResponse.getStudentName());
     }
+
+    @Test
+    public void update_student_by_id_should_return_updated_student() {
+        StudentRequest studentRequest = new StudentRequest("Vishwajeet Kotkar", "vishwajeet.kotkar29@springbox.com",25);
+        when(studentRepository.getReferenceById(any(Integer.class))).thenReturn(student);
+        when(studentRepository.save(any(Student.class))).thenReturn(student);
+
+        student.setEmail("vishwajeet.kotkar29@springbox.com");
+        student.setAge(25);
+
+        StudentResponse updatedStudent = studentService.updateStudentById(student.getId(), studentRequest);
+        assertEquals(student.getEmail(), updatedStudent.getEmail());
+        assertEquals(student.getAge(), updatedStudent.getAge());
+    }
 }
