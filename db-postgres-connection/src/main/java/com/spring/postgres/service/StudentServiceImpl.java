@@ -2,6 +2,7 @@ package com.spring.postgres.service;
 
 import com.spring.postgres.dto.StudentRequest;
 import com.spring.postgres.dto.StudentResponse;
+import com.spring.postgres.model.Student;
 import com.spring.postgres.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse saveStudent(StudentRequest studentRequest) {
-        return null;
+        Student student = studentRepository.save(StudentRequest.toStudent(studentRequest));
+        return StudentResponse.toStudentResponse(student);
     }
 
     @Override
