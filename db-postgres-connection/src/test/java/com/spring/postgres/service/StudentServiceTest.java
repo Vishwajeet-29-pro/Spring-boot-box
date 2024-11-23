@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,5 +53,15 @@ class StudentServiceTest {
         assertNotNull(responseList);
         assertEquals(1, responseList.size());
         assertEquals(24, responseList.getFirst().getAge());
+    }
+
+    @Test
+    public void get_by_id_should_return_student_response() {
+        when(studentRepository.getReferenceById(any(Integer.class))).thenReturn(student);
+
+        StudentResponse studentResponse = studentService.findStudentById(student.getId());
+
+        assertNotNull(studentResponse);
+        assertEquals("Vishwajeet Kotkar", studentResponse.getStudentName());
     }
 }
