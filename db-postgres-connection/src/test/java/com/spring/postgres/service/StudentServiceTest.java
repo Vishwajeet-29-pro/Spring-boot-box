@@ -45,7 +45,7 @@ class StudentServiceTest {
     }
 
     @Test
-    public void find_all_should_return_list_of_studentResponse_and_status_ok() {
+    public void find_all_should_return_list_of_studentResponse() {
         when(studentRepository.findAll()).thenReturn(List.of(student));
 
         List<StudentResponse> responseList = studentService.findAllStudents();
