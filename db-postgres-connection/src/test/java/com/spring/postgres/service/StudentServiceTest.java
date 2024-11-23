@@ -14,8 +14,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
@@ -78,5 +78,16 @@ class StudentServiceTest {
         StudentResponse updatedStudent = studentService.updateStudentById(student.getId(), studentRequest);
         assertEquals(student.getEmail(), updatedStudent.getEmail());
         assertEquals(student.getAge(), updatedStudent.getAge());
+    }
+
+    @Test
+    public void delete_student_by_should_delete_student_details() {
+        Integer studentId = 1;
+        when(studentRepository.existsById(studentId)).thenReturn(true);
+
+        studentService.deleteStudentById(studentId);
+
+        verify(studentRepository, times(1)).deleteById(studentId);
+
     }
 }
