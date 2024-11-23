@@ -23,7 +23,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentResponse> findAllStudents() {
-        return List.of();
+        List<Student> studentList = studentRepository.findAll();
+        return studentList.stream().map(
+                StudentResponse::toStudentResponse
+        ).toList();
     }
 
     @Override
