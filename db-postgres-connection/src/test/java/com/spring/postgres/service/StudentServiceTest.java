@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -42,5 +44,13 @@ class StudentServiceTest {
         assertEquals("Vishwajeet Kotkar", studentResponse.getStudentName());
     }
 
+    @Test
+    public void find_all_should_return_list_of_studentResponse_and_status_ok() {
+        when(studentRepository.findAll()).thenReturn(List.of(student));
 
+        List<StudentResponse> responseList = studentService.findAllStudents();
+        assertNotNull(responseList);
+        assertEquals(1, responseList.size());
+        assertEquals(24, responseList.getFirst().getAge());
+    }
 }
