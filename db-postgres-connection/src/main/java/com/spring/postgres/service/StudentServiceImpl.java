@@ -31,7 +31,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse findStudentById(Integer studentId) {
-        return null;
+        Student student = studentRepository.getReferenceById(studentId);
+        return StudentResponse.toStudentResponse(student);
     }
 
     @Override
