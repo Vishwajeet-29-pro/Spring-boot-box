@@ -47,6 +47,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudentById(Integer studentId) {
-
+        if (!studentRepository.existsById(studentId)) {
+            throw new IllegalArgumentException("Student not found");
+        }
+        studentRepository.deleteById(studentId);
     }
 }
