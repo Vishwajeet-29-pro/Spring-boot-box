@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -92,5 +93,14 @@ class StudentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("john.wick29@springbox.com"))
                 .andExpect(jsonPath("$.age").value(23));
+    }
+
+    @Test
+    public void delete_student_by_should_remove_student_and_return_no_content_success_204() throws Exception {
+        Integer studentId = 1;
+        doNothing().when(studentService).deleteStudentById(studentId);
+
+        mockMvc.perform(delete("/students/{id}", studentId))
+                .andExpect(status().isNoContent());
     }
 }
