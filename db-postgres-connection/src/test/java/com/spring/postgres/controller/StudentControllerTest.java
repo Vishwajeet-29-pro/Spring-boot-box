@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -64,6 +65,18 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$.[0].studentName").value("John Wick"))
                 .andExpect(jsonPath("$.[0].age").value(22))
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void find_by_id_should_return_student_response_and_200_ok() throws Exception {
+        Integer studentId = 1;
+        when(studentService.findStudentById(studentId)).thenReturn(studentResponse);
+
+        mockMvc.perform(get("/students/{id}",studentId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.studentName").value("John Wick"))
                 .andReturn().getResponse().getContentAsString();
     }
 }
