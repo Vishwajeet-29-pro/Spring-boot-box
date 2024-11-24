@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -85,9 +84,9 @@ class StudentControllerTest {
         StudentRequest updateStudentRequest = new StudentRequest("John Wick", "john.wick29@springbox.com",23);
         StudentResponse updatedStudentResponse = new StudentResponse(studentId,"John Wick", "john.wick29@springbox.com",23);
 
-        when(studentService.updateStudentById(studentId, any(StudentRequest.class))).thenReturn(updatedStudentResponse);
+        when(studentService.updateStudentById(eq(studentId), any(StudentRequest.class))).thenReturn(updatedStudentResponse);
 
-        mockMvc.perform(put("/{id}", studentId)
+        mockMvc.perform(put("/students/{id}", studentId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(updateStudentRequest)))
                 .andExpect(status().isOk())
