@@ -19,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -78,5 +77,21 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.studentName").value("John Wick"))
                 .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void update_by_id_should_update_student_and_return_200_ok() throws Exception {
+        Integer studentId = 1;
+        StudentRequest updateStudentRequest = new StudentRequest("John Wick", "john.wick29@springbox.com",23);
+        StudentResponse updatedStudentResponse = new StudentResponse(studentId,"John Wick", "john.wick29@springbox.com",23);
+
+        when(studentService.updateStudentById(studentId, any(StudentRequest.class))).thenReturn(updatedStudentResponse);
+
+        mockMvc.perform(put("/{id}", studentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(updateStudentRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("john.wick29@springbox.com"))
+                .andExpect(jsonPath("$.age").value(23));
     }
 }
