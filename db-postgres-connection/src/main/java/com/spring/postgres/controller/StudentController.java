@@ -31,4 +31,12 @@ public class StudentController {
     public ResponseEntity<StudentResponse> findStudentById(@PathVariable("id") Integer studentId) {
         return ResponseEntity.ok(studentService.findStudentById(studentId));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentResponse> updateStudentById(
+            @PathVariable("id") Integer studentId,
+            @RequestBody StudentRequest studentRequest
+    ) {
+        return ResponseEntity.ok(studentService.updateStudentById(studentId, studentRequest));
+    }
 }
