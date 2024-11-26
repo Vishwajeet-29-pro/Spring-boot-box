@@ -14,6 +14,10 @@ clean:
 	$(GRADLE) clean
 	@echo "Cleaned all build files."
 
+# Runs the same thing as the pipeline.
+.PHONY: pipeline
+pipeline: build
+
 # Build the entire project
 build:
 	$(GRADLE) \
