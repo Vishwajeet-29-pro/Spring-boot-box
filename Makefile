@@ -1,9 +1,5 @@
 # Variables
-ifeq ($(OS),Windows_NT)
-    GRADLE=gradlew
-else
-    GRADLE=./gradlew
-endif
+GRADLE=./gradlew
 MODULES=$(shell ls -d */ | grep db)  # Lists db-h2-connection, db-postgres-connection, etc.
 
 # Commands
@@ -71,3 +67,4 @@ help:
 	@echo "  make run-module  - Build and test a specific module"
 	@echo "  make help        - Show this help message"
 
+include .User.mk
