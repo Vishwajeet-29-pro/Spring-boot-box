@@ -55,4 +55,15 @@ class CustomerServiceTest {
         assertEquals(1, customerResponseList.size());
         assertEquals("John Wick", customerResponseList.getFirst().getCustomerName());
     }
+
+    @Test
+    public void get_customer_by_id_should_return_customer_detail() {
+        when(customerRepository.getReferenceById(any(Integer.class))).thenReturn(customer);
+
+        CustomerResponse customerResponse = customerService.getCustomerById(customer.getId());
+
+        assertNotNull(customerResponse);
+        assertEquals("John Wick", customerResponse.getCustomerName());
+        assertEquals("Some where in the world", customerResponse.getCustomerAddress());
+    }
 }
