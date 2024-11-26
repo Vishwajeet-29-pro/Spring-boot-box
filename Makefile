@@ -18,9 +18,9 @@ clean:
 build:
 	$(GRADLE) \
 			build \
-			:db-h2-connection \
-			:db-postgres-connection \
-			:db-mysql-connection \
+			:db-h2-connection:build \
+			:db-postgres-connection:build \
+			:db-mysql-connection:build
 	@echo "Built the entire project."
 
 # Test the entire project
