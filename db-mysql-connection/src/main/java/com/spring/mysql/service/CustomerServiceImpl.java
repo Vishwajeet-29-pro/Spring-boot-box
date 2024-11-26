@@ -47,6 +47,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomerById(Integer id) {
-
+        if (!customerRepository.existsById(id)) {
+            throw new IllegalArgumentException("Customer not found");
+        }
+        customerRepository.deleteById(id);
     }
 }
