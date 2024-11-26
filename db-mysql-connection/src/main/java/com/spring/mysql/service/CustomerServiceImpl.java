@@ -30,7 +30,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse getCustomerById(Integer id) {
-        return null;
+        Customer customer = customerRepository.getReferenceById(id);
+        return CustomerResponse.toCustomerResponse(customer);
     }
 
     @Override
