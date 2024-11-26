@@ -1,7 +1,10 @@
 # Variables
-GRADLE=./gradlew
+ifeq ($(OS),Windows_NT)
+    GRADLE=gradlew
+else
+    GRADLE=./gradlew
+endif
 MODULES=$(shell ls -d */ | grep db)  # Lists db-h2-connection, db-postgres-connection, etc.
-DOCKER_COMPOSE_FILE=docker-compose.yml
 
 # Commands
 .PHONY: all clean build test run help
