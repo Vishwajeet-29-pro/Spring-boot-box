@@ -34,6 +34,19 @@ run:
 	$(GRADLE) bootRun
 	@echo "Running the root Spring Boot application."
 
+# Run individual modules
+run-h2:
+	$(GRADLE) :db-h2-connection:bootRun
+	@echo "Running db-h2-connection module."
+
+run-postgres:
+	$(GRADLE) :db-postgres-connection:bootRun
+	@echo "Running db-postgres-connection module."
+
+run-mysql:
+	$(GRADLE) :db-mysql-connection:bootRun
+	@echo "Running db-mysql-connection module."
+
 # Build and test a specific module
 run-module:
 	@read -p "Enter the module name (e.g., db-h2-connection): " MODULE && \
