@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
@@ -79,5 +79,14 @@ class CustomerServiceTest {
         assertEquals("john.wick20@springbox.com", customerResponse.getEmail());
         assertEquals("8833224455", customerResponse.getPhone());
         assertEquals("New York", customerResponse.getCustomerAddress());
+    }
+
+    @Test
+    public void delete_by_id_should_delete_customer_details_returns_nothing() {
+        Integer id = 1;
+        when(customerRepository.existsById(id)).thenReturn(true);
+        customerService.deleteCustomerById(id);
+
+        verify(customerRepository, times(1)).deleteById(id);
     }
 }
