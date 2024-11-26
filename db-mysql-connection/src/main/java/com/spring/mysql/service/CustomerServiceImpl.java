@@ -2,6 +2,7 @@ package com.spring.mysql.service;
 
 import com.spring.mysql.dto.CustomerRequest;
 import com.spring.mysql.dto.CustomerResponse;
+import com.spring.mysql.model.Customer;
 import com.spring.mysql.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse createCustomerAccount(CustomerRequest customerRequest) {
-        return null;
+        Customer customer = customerRepository.save(CustomerRequest.toCustomer(customerRequest));
+        return CustomerResponse.toCustomerResponse(customer);
     }
 
     @Override
