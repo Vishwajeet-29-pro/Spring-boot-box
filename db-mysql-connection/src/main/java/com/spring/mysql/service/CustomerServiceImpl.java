@@ -36,7 +36,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse updateCustomerById(Integer id, CustomerRequest customerRequest) {
-        return null;
+        Customer customer = customerRepository.getReferenceById(id);
+        customer.setCustomerName(customer.getCustomerName());
+        customer.setEmail(customerRequest.getEmail());
+        customer.setPhone(customerRequest.getPhone());
+        customer.setCustomerAddress(customerRequest.getCustomerAddress());
+        Customer updatedCustomerDetails = customerRepository.save(customer);
+        return CustomerResponse.toCustomerResponse(updatedCustomerDetails);
     }
 
     @Override
