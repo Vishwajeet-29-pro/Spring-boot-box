@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -42,5 +44,15 @@ class CustomerServiceTest {
         CustomerResponse customerResponse = customerService.createCustomerAccount(customerRequest);
         assertNotNull(customerResponse);
         assertEquals("John Wick", customerResponse.getCustomerName());
+    }
+
+    @Test
+    public void get_all_customer_should_return_list_of_customers() {
+        when(customerRepository.findAll()).thenReturn(List.of(customer));
+        List<CustomerResponse> customerResponseList = customerService.findAllCustomer();
+
+        assertNotNull(customerResponseList);
+        assertEquals(1, customerResponseList.size());
+        assertEquals("John Wick", customerResponseList.getFirst().getCustomerName());
     }
 }
