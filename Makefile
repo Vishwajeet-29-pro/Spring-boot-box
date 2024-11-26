@@ -14,13 +14,17 @@ clean:
 	$(GRADLE) clean
 	@echo "Cleaned all build files."
 
+# Runs the same thing as the pipeline.
+.PHONY: pipeline
+pipeline: build
+
 # Build the entire project
 build:
 	$(GRADLE) \
 			build \
-			:db-h2-connection \
-			:db-postgres-connection \
-			:db-mysql-connection \
+			:db-h2-connection:build \
+			:db-postgres-connection:build \
+			:db-mysql-connection:build
 	@echo "Built the entire project."
 
 # Test the entire project
@@ -33,6 +37,19 @@ test:
 run:
 	$(GRADLE) bootRun
 	@echo "Running the root Spring Boot application."
+
+# Run individual modules
+run-h2:
+	$(GRADLE) :db-h2-connection:bootRun
+	@echo "Running db-h2-connection module."
+
+run-postgres:
+	$(GRADLE) :db-postgres-connection:bootRun
+	@echo "Running db-postgres-connection module."
+
+run-mysql:
+	$(GRADLE) :db-mysql-connection:bootRun
+	@echo "Running db-mysql-connection module."
 
 # Build and test a specific module
 run-module:
