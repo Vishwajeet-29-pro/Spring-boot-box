@@ -15,7 +15,7 @@ clean:
 
 # Runs the same thing as the pipeline.
 .PHONY: pipeline
-pipeline: build
+pipeline: build test
 
 # Build the entire project
 build:
@@ -67,4 +67,4 @@ help:
 	@echo "  make run-module  - Build and test a specific module"
 	@echo "  make help        - Show this help message"
 
-include .User.mk
+-include .User.mk
