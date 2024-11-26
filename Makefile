@@ -48,8 +48,6 @@ help:
 	@echo "  make build       - Build all modules"
 	@echo "  make test        - Test all modules"
 	@echo "  make run         - Run the root application"
-	@echo "  make start-dbs   - Start database containers"
-	@echo "  make stop-dbs    - Stop database containers"
 	@echo "  make run-module  - Build and test a specific module"
 	@echo "  make help        - Show this help message"
 
