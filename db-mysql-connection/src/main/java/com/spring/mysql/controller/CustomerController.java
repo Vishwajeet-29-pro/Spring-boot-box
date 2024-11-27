@@ -42,4 +42,10 @@ public class CustomerController {
         CustomerResponse customerResponse = customerService.updateCustomerById(customerId, customerRequest);
         return ResponseEntity.ok(customerResponse);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
+        customerService.deleteCustomerById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
