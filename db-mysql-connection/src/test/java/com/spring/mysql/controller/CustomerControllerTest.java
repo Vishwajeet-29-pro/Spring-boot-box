@@ -68,9 +68,10 @@ class CustomerControllerTest {
 
     @Test
     public void get_customer_by_id_should_return_customer_and_status_isFound() throws Exception {
-        when(customerService.getCustomerById(any(Integer.class))).thenReturn(customerResponse);
+        Integer customerId = 1;
+        when(customerService.getCustomerById(customerId)).thenReturn(customerResponse);
 
-        mockMvc.perform(get("/api/customers")
+        mockMvc.perform(get("/api/customers/{id}", customerId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$.customerName").value("John Doe"))
