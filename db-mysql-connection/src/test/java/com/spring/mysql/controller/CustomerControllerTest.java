@@ -65,4 +65,15 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.[0].phone").value("9876543210"))
                 .andReturn().getResponse().getContentAsString();
     }
+
+    @Test
+    public void get_customer_by_id_should_return_customer_and_status_isFound() throws Exception {
+        when(customerService.getCustomerById(any(Integer.class))).thenReturn(customerResponse);
+
+        mockMvc.perform(get("/api/customers")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath("$.customerName").value("John Doe"))
+                .andExpect(jsonPath("$.customerAddress").value("Somewhere"));
+    }
 }
