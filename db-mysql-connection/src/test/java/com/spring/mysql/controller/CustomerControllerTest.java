@@ -18,8 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,5 +75,21 @@ class CustomerControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$.customerName").value("John Doe"))
                 .andExpect(jsonPath("$.customerAddress").value("Somewhere"));
+    }
+
+    @Test
+    public void update_by_should_return_updated_customer_and_status_200() throws Exception {
+        Integer id = 1;
+        CustomerRequest  updateCustomerRequest = new CustomerRequest("John Doe","john.doe20@springbox.com","9876542222", "Pune");
+        CustomerResponse updatedCustomerResponse = new CustomerResponse(1, "John Doe", "john.doe20@springbox.com","9876542222","Pune");
+
+        when(customerService.updateCustomerById(id, updateCustomerRequest)).thenReturn(updatedCustomerResponse);
+
+        mockMvc.perform(put("/api/customers/{id}",id)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.email").value("john.doe20@springbox.com"))
+                .andExpect(jsonPath("$.phone").value("987652222"))
+                .andExpect(jsonPath("$.customerAddress").value("Pune"));
+
     }
 }
