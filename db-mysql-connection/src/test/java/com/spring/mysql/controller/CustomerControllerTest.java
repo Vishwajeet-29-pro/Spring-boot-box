@@ -100,7 +100,7 @@ class CustomerControllerTest {
        Integer id = 1;
        doNothing().when(customerService).deleteCustomerById(id);
 
-       mockMvc.perform(delete("/{id}", id))
+       mockMvc.perform(delete("/api/customers/{id}", id))
                .andExpect(status().isNoContent());
     }
 }
