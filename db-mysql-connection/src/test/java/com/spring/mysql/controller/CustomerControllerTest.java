@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -93,5 +93,14 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.phone").value("9876542222"))
                 .andExpect(jsonPath("$.customerAddress").value("Pune"));
 
+    }
+
+    @Test
+    public void delete_by_should_remove_customer_details_and_return_no_content_success_204() throws Exception {
+       Integer id = 1;
+       doNothing().when(customerService).deleteCustomerById(id);
+
+       mockMvc.perform(delete("/{id}", id))
+               .andExpect(status().isNoContent());
     }
 }
