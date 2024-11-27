@@ -27,4 +27,10 @@ public class CustomerController {
     public ResponseEntity<List<CustomerResponse>> findAllCustomers() {
         return ResponseEntity.ok(customerService.findAllCustomer());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerResponse> findCustomerDetailsById(@PathVariable("id") Integer customerId) {
+        CustomerResponse customerResponse = customerService.getCustomerById(customerId);
+        return new ResponseEntity<>(customerResponse, HttpStatus.FOUND);
+    }
 }
