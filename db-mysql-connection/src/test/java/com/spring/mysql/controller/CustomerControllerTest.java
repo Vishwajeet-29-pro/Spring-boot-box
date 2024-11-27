@@ -13,9 +13,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,6 +51,18 @@ class CustomerControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.customerName").value("John Doe"))
                 .andExpect(jsonPath("$.phone").value("9876543210"))
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void find_all_customer_should_return_list_of_customers() throws Exception {
+        when(customerService.findAllCustomer()).thenReturn(List.of(customerResponse));
+
+        mockMvc.perform(get("/api/customers")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size").value(1))
+                .andExpect(jsonPath("$.[0].customerName").value("John Doe"))
+                .andExpect(jsonPath("$.[0].phone").value("9876543210"))
                 .andReturn().getResponse().getContentAsString();
     }
 }
