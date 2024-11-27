@@ -33,4 +33,13 @@ public class CustomerController {
         CustomerResponse customerResponse = customerService.getCustomerById(customerId);
         return new ResponseEntity<>(customerResponse, HttpStatus.FOUND);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerResponse> updateCustomerById(
+            @PathVariable("id") Integer customerId,
+            @RequestBody CustomerRequest customerRequest
+    ) {
+        CustomerResponse customerResponse = customerService.updateCustomerById(customerId, customerRequest);
+        return ResponseEntity.ok(customerResponse);
+    }
 }
