@@ -9,12 +9,14 @@ A **modular Spring Boot project** designed to explore, implement, and master var
 ```graphql
 spring-boot-box/
 ├── settings.gradle.kts          # Gradle settings for module management
+├── Makefile                     # Build, test, and run commands using Makefile
 ├── gradlew                      # Gradle wrapper script
 ├── gradlew.bat                  # Gradle wrapper for Windows
 ├── build.gradle.kts             # Root Gradle configuration
 ├── README.md                    # Project documentation
 ├── db-h2-connection/            # Module for H2 database integration
 ├── db-postgres-connection/      # Module for PostgreSQL integration
+├── db-mysql-connection/         # Module for MySQL integration
 ├── (future modules...)          # Additional modules for extended functionalities
 ```
 
@@ -34,6 +36,11 @@ spring-boot-box/
     - A sandbox for learning Spring Boot features, database integrations, and advanced concepts.
 
 ---
+## Makefile Integration
+This project uses a Makefile to simplify build, test, run, and other operations. The Makefile provides a consistent interface for managing project tasks across different environments. For Windows users, you can install `make` using [Chocolatey](https://docs.chocolatey.org/en-us/choco/setup/#install-with-cmdexe) by running the following command:
+```bash
+choco install make
+```
 
 ## Current Modules
 
@@ -53,19 +60,25 @@ spring-boot-box/
     - Proper connection pooling and configuration.
     - RESTful APIs and corresponding test cases.
 
+### **3. db-mysql-connection**
+
+- **Purpose**: Demonstrates integration with MySQL.
+- **Features**:
+    - Full MySQL database support for production use.
+    - Comprehensive CRUD APIs.
+    - Extensive testing for all operations.
+
 ---
 
 ## Future Plans
 
 ### Planned Modules:
 
-1. **MySQL Integration**:
-    - Showcase Spring Boot’s capabilities with MySQL.
-2. **MongoDB Integration**:
+1. **MongoDB Integration**:
     - Learn and implement NoSQL database concepts.
-3. **Reactive Programming with WebFlux**:
+2. **Reactive Programming with WebFlux**:
     - Add R2DBC for reactive database operations.
-4. **Advanced Functionalities**:
+3. **Advanced Functionalities**:
     - Explore Spring Cloud for microservices.
     - Build inter-service communication and monitoring.
 
@@ -84,23 +97,39 @@ spring-boot-box/
 - **Java 17+** (or preferred version).
 - **Gradle** (build tool).
 
-### Running a Module
-
-1. Navigate to the desired module directory:
-```
-cd db-h2-connection
-```
-
-2. Build and run the application:
+### Using the Makefile
+1. Build and Test All Modules:
 ```bash
-    ./gradlew bootRun
+    make all
 ```
-
-### Testing
-
+2. Build Modules:
+```bash
+    make
+```
+3. Clean All Build Files:
+```bash
+    make clean
+```
+4. Run the Root Spring Boot Application: (by default it runs h2 application)
+```bash
+    make run
+```
+5. Run the Specific Application: (e.g. h2 application)
+```bash
+    make run-h2
+```
+6. Build and Test a Specific Module:
+```bash
+    make run-module
+```
+7. Testing
 Run all tests for the module:
 ```
-./gradlew test
+    make test
+```
+8. Help
+```bash
+    make help
 ```
 ---
 
