@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -83,12 +84,13 @@ class CustomerControllerTest {
         CustomerRequest  updateCustomerRequest = new CustomerRequest("John Doe","john.doe20@springbox.com","9876542222", "Pune");
         CustomerResponse updatedCustomerResponse = new CustomerResponse(1, "John Doe", "john.doe20@springbox.com","9876542222","Pune");
 
-        when(customerService.updateCustomerById(id, updateCustomerRequest)).thenReturn(updatedCustomerResponse);
+        when(customerService.updateCustomerById(eq(id), any(CustomerRequest.class))).thenReturn(updatedCustomerResponse);
 
         mockMvc.perform(put("/api/customers/{id}",id)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(updateCustomerRequest)))
                 .andExpect(jsonPath("$.email").value("john.doe20@springbox.com"))
-                .andExpect(jsonPath("$.phone").value("987652222"))
+                .andExpect(jsonPath("$.phone").value("9876542222"))
                 .andExpect(jsonPath("$.customerAddress").value("Pune"));
 
     }
