@@ -1,15 +1,24 @@
 package com.spring.mysql.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.mysql.dto.CustomerRequest;
 import com.spring.mysql.dto.CustomerResponse;
 import com.spring.mysql.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CustomerController.class)
 class CustomerControllerTest {
@@ -27,5 +36,18 @@ class CustomerControllerTest {
     public void setup() {
         customerRequest = new CustomerRequest("John Doe","john.doe@springbox.com","9876543210", "Somewhere");
         customerResponse = new CustomerResponse(1, "John Doe", "john.doe@springbox.com","9876543210","Somewhere");
+    }
+
+    @Test
+    public void create_customer_account_should_return_customer_response_and_201_created() throws Exception {
+        when(customerService.createCustomerAccount(any(CustomerRequest.class))).thenReturn(customerResponse);
+
+        mockMvc.perform(post("/api/customers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(customerRequest)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.customerName").value("John Doe"))
+                .andExpect(jsonPath("$.phone").value("9876543210"))
+                .andReturn().getResponse().getContentAsString();
     }
 }
