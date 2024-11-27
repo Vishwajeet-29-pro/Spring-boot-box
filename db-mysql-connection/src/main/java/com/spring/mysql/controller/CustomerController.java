@@ -6,10 +6,9 @@ import com.spring.mysql.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -22,5 +21,10 @@ public class CustomerController {
     public ResponseEntity<CustomerResponse> createCustomerAccount(@RequestBody CustomerRequest customerRequest) {
         CustomerResponse customerResponse = customerService.createCustomerAccount(customerRequest);
         return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CustomerResponse>> findAllCustomers() {
+        return ResponseEntity.ok(customerService.findAllCustomer());
     }
 }

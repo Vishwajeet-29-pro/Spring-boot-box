@@ -60,7 +60,7 @@ class CustomerControllerTest {
 
         mockMvc.perform(get("/api/customers")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size").value(1))
+                .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$.[0].customerName").value("John Doe"))
                 .andExpect(jsonPath("$.[0].phone").value("9876543210"))
                 .andReturn().getResponse().getContentAsString();
