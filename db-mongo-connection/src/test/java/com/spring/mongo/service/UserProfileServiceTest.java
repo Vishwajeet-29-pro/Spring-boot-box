@@ -81,7 +81,7 @@ class UserProfileServiceTest {
     @Test
     public void delete_user_by_id_should_delete_user_profile() {
         String id = "1";
-        when(userProfileRepository.existsById(id)).thenReturn(true);
+        doNothing().when(userProfileRepository).deleteById(id);
         userProfileRepository.deleteById(id);
 
         verify(userProfileRepository, times(1)).deleteById(id);
