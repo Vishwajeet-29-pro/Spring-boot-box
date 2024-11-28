@@ -24,7 +24,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public List<UserProfileResponse> findAllUserProfile() {
-        return List.of();
+        return userProfileRepository.findAll().stream()
+                .map(UserProfileResponse::userProfileResponse)
+                .toList();
     }
 
     @Override
