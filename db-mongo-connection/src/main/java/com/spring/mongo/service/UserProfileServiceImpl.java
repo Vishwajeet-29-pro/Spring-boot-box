@@ -37,7 +37,19 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileResponse updateUserProfileById(String id, UserProfileRequest userProfileRequest) {
-        return null;
+        Optional<UserProfile> existingUserProfile = userProfileRepository.findById(id);
+        if (existingUserProfile.isPresent()) {
+            UserProfile userProfile = existingUserProfile.get();
+            userProfile.setUsername(userProfileRequest.getUsername());
+            userProfile.setEmail(userProfileRequest.getEmail());
+            userProfile.setPhone(userProfileRequest.getPhone());
+            userProfile.setActive(userProfile.isActive());
+
+            UserProfile updatedUserProfile = userProfileRepository.save(userProfile);
+            return UserProfileResponse.userProfileResponse(updatedUserProfile);
+        } else {
+            throw new RuntimeException("User Profile not found");
+        }
     }
 
     @Override
