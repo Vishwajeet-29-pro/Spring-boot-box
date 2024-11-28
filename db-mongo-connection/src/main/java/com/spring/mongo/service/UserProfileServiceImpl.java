@@ -31,7 +31,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public Optional<UserProfileResponse> findUserProfileById(String id) {
-        return null;
+        UserProfile userProfile = userProfileRepository.findById(id).orElseThrow();
+        return Optional.of(UserProfileResponse.userProfileResponse(userProfile));
     }
 
     @Override
