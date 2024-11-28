@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserProfileServiceTest {
@@ -76,5 +76,15 @@ class UserProfileServiceTest {
         assertEquals("john_updated", userProfileResponse.getUsername());
         assertEquals("john_updated@example.com", userProfileResponse.getEmail());
         assertFalse(userProfileResponse.isActive());
+    }
+
+    @Test
+    public void delete_user_by_id_should_delete_user_profile() {
+        String id = "1";
+        when(userProfileRepository.existsById(id)).thenReturn(true);
+        userProfileRepository.deleteById(id);
+
+        verify(userProfileRepository, times(1)).deleteById(id);
+
     }
 }
