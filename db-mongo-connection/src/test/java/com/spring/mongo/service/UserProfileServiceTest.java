@@ -54,9 +54,11 @@ class UserProfileServiceTest {
 
     @Test
     public void find_by_should_return_user_profile() {
-        when(userProfileRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(userProfile));
+        String userId = "12345";
+        UserProfile userProfile = new UserProfile(userId, "johndoe", "johndoe@example.com", "1234567890", true);
+        when(userProfileRepository.findById(userId)).thenReturn(Optional.of(userProfile));
 
-        Optional<UserProfileResponse> userProfileResponse = userProfileService.findUserProfileById(userProfile.getId());
+        Optional<UserProfileResponse> userProfileResponse = userProfileService.findUserProfileById(userId);
 
         assertTrue(userProfileResponse.isPresent());
         assertEquals("johndoe",userProfileResponse.get().getUsername());
