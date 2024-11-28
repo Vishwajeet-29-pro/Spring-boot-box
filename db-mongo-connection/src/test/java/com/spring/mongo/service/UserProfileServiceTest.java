@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,5 +50,15 @@ class UserProfileServiceTest {
         assertEquals(1, userProfileResponses.size());
         assertEquals("johndoe",userProfileResponses.getFirst().getUsername());
         assertTrue(userProfileResponses.getFirst().isActive());
+    }
+
+    @Test
+    public void find_by_should_return_user_profile() {
+        when(userProfileRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(userProfile));
+
+        Optional<UserProfileResponse> userProfileResponse = userProfileService.findUserProfileById(userProfile.getId());
+
+        assertTrue(userProfileResponse.isPresent());
+        assertEquals("johndoe",userProfileResponse.get().getUsername());
     }
 }
