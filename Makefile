@@ -23,7 +23,8 @@ build:
 			build \
 			:db-h2-connection:build \
 			:db-postgres-connection:build \
-			:db-mysql-connection:build
+			:db-mysql-connection:build \
+			:db-mongo-connection:build
 	@echo "Built the entire project."
 
 # Test the entire project
@@ -49,6 +50,10 @@ run-postgres:
 run-mysql:
 	$(GRADLE) :db-mysql-connection:bootRun
 	@echo "Running db-mysql-connection module."
+
+run-mongodb:
+	$(GRADLE) :db-mongo-connection:bootRun
+	@echo "Running db-mongo-connection module."
 
 # Build and test a specific module
 run-module:
