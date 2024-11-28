@@ -61,4 +61,20 @@ class UserProfileServiceTest {
         assertTrue(userProfileResponse.isPresent());
         assertEquals("johndoe",userProfileResponse.get().getUsername());
     }
+
+    @Test
+    public void update_by_id_should_return_updated_user_profile() {
+        UserProfile existingProfile = new UserProfile("1", "john_doe", "john@example.com", "1234567890", true);
+        UserProfile updatedProfile = new UserProfile("1", "john_updated", "john_updated@example.com", "9876543210", false);
+        UserProfileRequest userProfileRequest = new UserProfileRequest("john_updated", "john_updated@example.com", "9876543210", false);
+
+        when(userProfileRepository.findById("1")).thenReturn(Optional.of(existingProfile));
+        when(userProfileRepository.save(any(UserProfile.class))).thenReturn(updatedProfile);
+
+        UserProfileResponse userProfileResponse = userProfileService.updateUserProfileById("1", userProfileRequest);
+
+        assertEquals("john_updated", userProfileResponse.getUsername());
+        assertEquals("john_updated@example.com", userProfileResponse.getEmail());
+        assertFalse(userProfileResponse.isActive());
+    }
 }
