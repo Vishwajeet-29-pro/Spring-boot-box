@@ -54,6 +54,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public void deleteUserProfileById(String id) {
-
+        if (!userProfileRepository.existsById(id)) {
+            throw new RuntimeException("User profile with id "+id+" not found");
+        }
+        userProfileRepository.deleteById(id);
     }
 }
