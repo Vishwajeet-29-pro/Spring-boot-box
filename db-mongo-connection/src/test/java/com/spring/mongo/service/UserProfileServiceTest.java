@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -37,5 +39,15 @@ class UserProfileServiceTest {
         assertNotNull(userProfileResponse);
         assertEquals("johndoe",userProfileResponse.getUsername());
         assertTrue(userProfileResponse.isActive());
+    }
+
+    @Test
+    public void find_all_should_return_list_of_user_profiles() {
+        when(userProfileRepository.findAll()).thenReturn(List.of(userProfile));
+        List<UserProfileResponse> userProfileResponses = userProfileService.findAllUserProfile();
+
+        assertEquals(1, userProfileResponses.size());
+        assertEquals("johndoe",userProfileResponses.getFirst().getUsername());
+        assertTrue(userProfileResponses.getFirst().isActive());
     }
 }
