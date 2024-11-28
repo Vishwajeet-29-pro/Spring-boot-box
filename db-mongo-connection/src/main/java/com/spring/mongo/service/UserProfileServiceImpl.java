@@ -2,6 +2,7 @@ package com.spring.mongo.service;
 
 import com.spring.mongo.dto.UserProfileRequest;
 import com.spring.mongo.dto.UserProfileResponse;
+import com.spring.mongo.model.UserProfile;
 import com.spring.mongo.repository.UserProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileResponse createProfile(UserProfileRequest userProfileRequest) {
-        return null;
+        UserProfile userProfile = userProfileRepository.save(UserProfileRequest.toUserProfile(userProfileRequest));
+        return UserProfileResponse.userProfileResponse(userProfile);
     }
 
     @Override
