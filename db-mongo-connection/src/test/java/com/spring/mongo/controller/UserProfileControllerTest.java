@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -90,5 +91,14 @@ class UserProfileControllerTest {
                 .content(new ObjectMapper().writeValueAsString(profileRequest)))
                 .andExpect(jsonPath("$.username").value("john doe"))
                 .andExpect(jsonPath("$.active").value(true));
+    }
+
+    @Test
+    public void delete_by_should_delete_user_profile() throws Exception {
+        String id = "1234";
+        doNothing().when(userProfileService).deleteUserProfileById(id);
+
+        mockMvc.perform(delete("/api/user-profile", id))
+                .andExpect(status().isNoContent());
     }
 }
