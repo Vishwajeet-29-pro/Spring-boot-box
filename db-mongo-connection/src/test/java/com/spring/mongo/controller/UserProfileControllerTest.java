@@ -60,7 +60,7 @@ class UserProfileControllerTest {
         mockMvc.perform(get("/api/user-profile")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$.[0].username").value(1))
+                .andExpect(jsonPath("$.[0].username").value("johndoe"))
                 .andExpect(jsonPath("$.[0].active").value(false));
     }
 
