@@ -14,8 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,6 +51,17 @@ class UserProfileControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.username").value("johndoe"))
                 .andExpect(jsonPath("$.active", Matchers.is(false)));
+    }
+
+    @Test
+    public void find_user_profile_should_return_list_of_user_profiles() throws Exception {
+        when(userProfileService.findAllUserProfile()).thenReturn(List.of(profileResponse));
+
+        mockMvc.perform(get("/api/user-profile")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$.[0].username").value(1))
+                .andExpect(jsonPath("$.[0].active").value(false));
     }
 
 }
