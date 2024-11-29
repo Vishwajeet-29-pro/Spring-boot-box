@@ -35,4 +35,10 @@ public class UserProfileController {
         Optional<UserProfileResponse> userProfileResponse = userProfileService.findUserProfileById(id);
         return ResponseEntity.ok(userProfileResponse);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserProfileResponse> updateUserProfileById(
+            @PathVariable("id") String id, @RequestBody UserProfileRequest userProfileRequest ) {
+        return ResponseEntity.ok(userProfileService.updateUserProfileById(id, userProfileRequest));
+    }
 }
