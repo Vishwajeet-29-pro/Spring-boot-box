@@ -41,4 +41,10 @@ public class UserProfileController {
             @PathVariable("id") String id, @RequestBody UserProfileRequest userProfileRequest ) {
         return ResponseEntity.ok(userProfileService.updateUserProfileById(id, userProfileRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUserProfileById(@PathVariable("id") String id) {
+        userProfileService.deleteUserProfileById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
