@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,5 +75,20 @@ class UserProfileControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("johndoe"))
                 .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void update_by_id_should_update_user_profile_and_return_user_profile_with_status_updated() throws Exception {
+        String id = "1234";
+        profileRequest = new UserProfileRequest("john doe", "john.doe29@springbox.com","9876543200", true);
+        profileResponse = new UserProfileResponse("1234", "john doe", "john.doe29@springbox.com","9876543200",true);
+
+        when(userProfileService.updateUserProfileById(eq(id), any(UserProfileRequest.class))).thenReturn(profileResponse);
+
+        mockMvc.perform(put("/api/user-profile/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(profileRequest)))
+                .andExpect(jsonPath("$.username").value("john doe"))
+                .andExpect(jsonPath("$.active").value(true));
     }
 }
