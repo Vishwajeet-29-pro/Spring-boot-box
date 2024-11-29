@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -64,4 +65,15 @@ class UserProfileControllerTest {
                 .andExpect(jsonPath("$.[0].active").value(false));
     }
 
+    @Test
+    public void get_by_id_should_return_user_profile_and_status_200() throws Exception {
+        String id = "1234";
+        when(userProfileService.findUserProfileById(id)).thenReturn(Optional.ofNullable(profileResponse));
+
+        mockMvc.perform(get("/api/user-profile/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("johndoe"))
+                .andReturn().getResponse().getContentAsString();
+    }
 }
