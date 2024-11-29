@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user-profile")
@@ -27,5 +28,11 @@ public class UserProfileController {
     public ResponseEntity<List<UserProfileResponse>> findAllUserProfile() {
         List<UserProfileResponse> userProfileResponses = userProfileService.findAllUserProfile();
         return ResponseEntity.ok(userProfileResponses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<UserProfileResponse>> findUserProfileById(@PathVariable("id") String id) {
+        Optional<UserProfileResponse> userProfileResponse = userProfileService.findUserProfileById(id);
+        return ResponseEntity.ok(userProfileResponse);
     }
 }
