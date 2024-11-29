@@ -98,7 +98,7 @@ class UserProfileControllerTest {
         String id = "1234";
         doNothing().when(userProfileService).deleteUserProfileById(id);
 
-        mockMvc.perform(delete("/api/user-profile", id))
+        mockMvc.perform(delete("/api/user-profile/{id}", id))
                 .andExpect(status().isNoContent());
     }
 }
