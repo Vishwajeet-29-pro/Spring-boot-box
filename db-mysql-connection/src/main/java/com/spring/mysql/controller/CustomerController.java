@@ -60,7 +60,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponse> findCustomerDetailsById(@PathVariable("id") Integer customerId) {
         CustomerResponse customerResponse = customerService.getCustomerById(customerId);
-        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+        return new ResponseEntity<>(customerResponse, HttpStatus.FOUND);
     }
 
     @Operation(summary = "Update customer details by ID")
