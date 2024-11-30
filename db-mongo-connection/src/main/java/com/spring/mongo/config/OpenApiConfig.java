@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         name="Vishwajeet",
                         email="vishwajeetak@gmail.com"
                 ),
-                description = "OpenApi documentation for Students Operations from Spring box",
+                description = "OpenApi documentation for User Profile Operations from Spring box",
                 title = "DB MongoDB integration - User Profile Details",
                 version = "1.0",
                 termsOfService = "Terms of service"
