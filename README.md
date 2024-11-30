@@ -133,6 +133,20 @@ Run all tests for the module:
 ```
 ---
 
+## OpenAPI Integration
+
+The project leverages **OpenAPI** to provide interactive API documentation. This makes it easy to explore and test the REST APIs for each module.
+
+### How to Access OpenAPI Documentation:
+
+1. Start the Spring Boot application.
+2. Navigate to the following URL in your browser
+    ```bash
+        http://localhost:8080/swagger-ui/index.html
+    ```
+   - Replace `8080` with the appropriate port if a different one is configured.
+3. Explore the API endpoints, input parameters, and responses in an interactive interface.
+
 ## Contributions
 
 Contributions are welcome! Feel free to fork the repository, create a new module, or enhance the existing ones.
