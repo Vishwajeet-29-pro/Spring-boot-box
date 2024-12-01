@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 import java.util.List;
@@ -91,6 +92,19 @@ class ProductServiceTest {
 
         ProductResponse updatedProduct = productService.updateProductById(product.getId(), productRequest);
         assertEquals(90, updatedProduct.getProductQuantity());
+    }
+
+    @Test
+    public void if_product_by_id_not_found_should_throw_ProductNotFoundException() {
+        int id = 33;
+        ProductRequest productRequest = new ProductRequest("Mobile","Mobile under 20000",19999, 90);
+        when(productRepository.findById(id)).thenReturn(Optional.empty());
+
+        ProductNotFoundException exception = assertThrows(
+                ProductNotFoundException.class,
+                () -> productService.updateProductById(id, productRequest)
+        );
+        assertEquals("Product with id 33 not found", exception.getMessage());
     }
 
     @Test
