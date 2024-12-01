@@ -1,5 +1,6 @@
 package com.spring.h2.controller;
 
+import com.spring.h2.dto.ErrorResponse;
 import com.spring.h2.dto.ProductRequest;
 import com.spring.h2.dto.ProductResponse;
 import com.spring.h2.service.ProductService;
@@ -49,7 +50,8 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product retrieved successfully",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable("id") int id) {
@@ -60,7 +62,8 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product updated successfully",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> updateProductById(
@@ -74,7 +77,8 @@ public class ProductController {
     @Operation(summary = "Delete a product by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable int id) {
