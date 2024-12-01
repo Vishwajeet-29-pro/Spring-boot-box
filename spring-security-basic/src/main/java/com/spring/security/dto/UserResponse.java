@@ -15,7 +15,7 @@ public class UserResponse {
     private String password;
     private Role role;
 
-    public UserResponse userResponse(User user) {
+    public static UserResponse userResponse(User user) {
         return new UserResponse(
                 user.getId(),
                 user.getUsername(),

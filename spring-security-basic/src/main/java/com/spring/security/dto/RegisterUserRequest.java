@@ -14,7 +14,7 @@ public class RegisterUserRequest {
     private String password;
     private Role role;
 
-    public User toUser(RegisterUserRequest registerUserRequest) {
+    public static User toUser(RegisterUserRequest registerUserRequest) {
         User user = new User();
         user.setUsername(registerUserRequest.getUsername());
         user.setPassword(registerUserRequest.getPassword());
