@@ -2,6 +2,7 @@ package com.spring.h2.service;
 
 import com.spring.h2.dto.ProductRequest;
 import com.spring.h2.dto.ProductResponse;
+import com.spring.h2.exception.ProductNotFoundException;
 import com.spring.h2.model.Product;
 import com.spring.h2.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,7 +61,7 @@ class ProductServiceTest {
 
     @Test
     public void get_by_id_should_return_one_product() {
-        when(productRepository.getReferenceById(any(Integer.class))).thenReturn(product);
+        when(productRepository.findById(any(Integer.class))).thenReturn(Optional.of(product));
 
         ProductResponse productResponse = productService.getProductById(product.getId());
 
