@@ -69,6 +69,19 @@ class ProductServiceTest {
     }
 
     @Test
+    public void when_product_not_found_should_throw_product_not_found_exception() {
+        int id = 33;
+        when(productRepository.findById(id)).thenReturn(Optional.empty());
+
+        ProductNotFoundException exception = assertThrows(
+                ProductNotFoundException.class,
+                () -> productService.getProductById(id)
+        );
+        assertEquals("Product with Id 33 not found", exception.getMessage());
+        verify(productRepository, times(1)).findById(id);
+    }
+
+    @Test
     public void update_by_id_should_update_product_return_updated_product() {
         ProductRequest productRequest = new ProductRequest("Mobile","Mobile under 20000",19999, 90);
         when(productRepository.getReferenceById(any(Integer.class))).thenReturn(product);
