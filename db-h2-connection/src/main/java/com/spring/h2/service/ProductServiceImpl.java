@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse updateProductById(int id, ProductRequest productRequest) {
-        Product toUpdate = productRepository.getReferenceById(id);
+        Product toUpdate = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id "+id+" not found"));
         toUpdate.setProductName(productRequest.getProductName());
         toUpdate.setDescription(productRequest.getDescription());
         toUpdate.setProductPrice(productRequest.getProductPrice());
