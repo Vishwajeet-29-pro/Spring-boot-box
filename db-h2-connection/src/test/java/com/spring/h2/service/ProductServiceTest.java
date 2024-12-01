@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 import java.util.List;
@@ -116,5 +115,16 @@ class ProductServiceTest {
 
         verify(productRepository, times(1)).deleteById(productId);
 
+    }
+
+    @Test
+    public void if_id_not_found_throw_illegal_argument_exception() {
+        int productId = 22;
+        when(productRepository.existsById(productId)).thenReturn(false);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> productService.deleteProductById(productId)
+        );
+        assertEquals("Product not found", exception.getMessage());
     }
 }
