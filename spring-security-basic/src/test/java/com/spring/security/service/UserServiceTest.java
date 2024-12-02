@@ -95,7 +95,16 @@ class UserServiceTest {
         assertEquals("New John", userResponse.getUsername());
         assertEquals("new-password", userResponse.getPassword());
         assertEquals(Role.ADMIN, userResponse.getRole());
+    }
 
+    @Test
+    public void ifUserNotFound_shouldThrowUserNotFoundException() {
+        Long id = 22L;
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
 
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                () -> userService.updateUserById(id, mockUserRequest));
+
+        assertEquals("User with 22 not found", exception.getMessage());
     }
 }
