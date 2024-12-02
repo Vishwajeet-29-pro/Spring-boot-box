@@ -2,6 +2,7 @@ package com.spring.security.service;
 
 import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UserResponse;
+import com.spring.security.exception.UserNotFoundException;
 import com.spring.security.model.User;
 import com.spring.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class UserService {
 
     public UserResponse findByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.map(UserResponse::userResponse).orElseThrow();
+        return user.map(UserResponse::userResponse)
+                .orElseThrow(() -> new UserNotFoundException("User with "+username +" not found"));
     }
 }
