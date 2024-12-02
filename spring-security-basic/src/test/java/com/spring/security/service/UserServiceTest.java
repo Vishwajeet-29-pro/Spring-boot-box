@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,5 +54,18 @@ class UserServiceTest {
 
         verify(passwordEncoder).encode("password123");
         verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    public void findByUsername_shouldReturnUserResponse() {
+        when(userRepository.findByUsername(mockUser.getUsername())).thenReturn(Optional.of(mockUser));
+
+        UserResponse userResponse = userService.findByUsername(mockUser.getUsername());
+
+        assertNotNull(userResponse);
+        assertEquals(mockUser.getUsername(), userResponse.getUsername());
+        assertEquals(mockUser.getRole(), userResponse.getRole());
+
+        verify(userRepository).findByUsername(mockUser.getUsername());
     }
 }

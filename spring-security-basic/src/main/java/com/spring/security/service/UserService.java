@@ -21,4 +21,8 @@ public class UserService {
         User savedUser = userRepository.save(RegisterUserRequest.toUser(userRequest));
         return UserResponse.userResponse(savedUser);
     }
+
+    public UserResponse findByUsername(String username) {
+        return null;
+    }
 }
