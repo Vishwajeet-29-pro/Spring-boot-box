@@ -79,4 +79,23 @@ class UserServiceTest {
 
         assertEquals("User with non-existing-user not found", ex.getMessage());
     }
+
+    @Test
+    public void updateUserById_shouldReturnUpdatedUser() {
+        Long id = 1L;
+        RegisterUserRequest userRequest = new RegisterUserRequest("New John", "new-password", Role.ADMIN);
+        User updatedUser = new User(id, "New John", "password123", Role.ADMIN);
+        updatedUser.setPassword("new-password");
+        when(userRepository.findById(id)).thenReturn(Optional.of(mockUser));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+
+        UserResponse userResponse = userService.updateUserById(id, userRequest);
+
+        assertNotNull(userResponse);
+        assertEquals("New John", userResponse.getUsername());
+        assertEquals("new-password", userResponse.getPassword());
+        assertEquals(Role.ADMIN, userResponse.getRole());
+
+
+    }
 }
