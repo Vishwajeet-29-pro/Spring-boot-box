@@ -30,4 +30,15 @@ public class UserService {
         return user.map(UserResponse::userResponse)
                 .orElseThrow(() -> new UserNotFoundException("User with "+username +" not found"));
     }
+
+    public UserResponse updateUserById(Long id, RegisterUserRequest userRequest) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("User with "+id+" not found")
+        );
+        user.setUsername(userRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setRole(userRequest.getRole());
+        User updatedUser = userRepository.save(user);
+        return UserResponse.userResponse(updatedUser);
+    }
 }
