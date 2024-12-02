@@ -51,7 +51,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             UserProfile updatedUserProfile = userProfileRepository.save(userProfile);
             return UserProfileResponse.userProfileResponse(updatedUserProfile);
         } else {
-            throw new RuntimeException("User Profile not found");
+            throw new UserProfileNotFoundException("User Profile with "+id+" not found");
         }
     }
 
