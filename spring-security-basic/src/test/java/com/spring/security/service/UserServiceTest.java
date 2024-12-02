@@ -2,6 +2,7 @@ package com.spring.security.service;
 
 import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UserResponse;
+import com.spring.security.exception.UserNotFoundException;
 import com.spring.security.model.Role;
 import com.spring.security.model.User;
 import com.spring.security.repository.UserRepository;
@@ -10,12 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,5 +68,15 @@ class UserServiceTest {
         assertEquals(mockUser.getRole(), userResponse.getRole());
 
         verify(userRepository).findByUsername(mockUser.getUsername());
+    }
+
+    @Test
+    public void userNotFound_shouldThrowUserNotFoundException() {
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.empty());
+
+        UserNotFoundException ex = assertThrows(UserNotFoundException.class,
+                () -> userService.findByUsername("non-existing-user"));
+
+        assertEquals("User with non-existing-user not found", ex.getMessage());
     }
 }
