@@ -2,6 +2,7 @@ package com.spring.mongo.service;
 
 import com.spring.mongo.dto.UserProfileRequest;
 import com.spring.mongo.dto.UserProfileResponse;
+import com.spring.mongo.exception.UserProfileNotFoundException;
 import com.spring.mongo.model.UserProfile;
 import com.spring.mongo.repository.UserProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +63,18 @@ class UserProfileServiceTest {
 
         assertTrue(userProfileResponse.isPresent());
         assertEquals("johndoe",userProfileResponse.get().getUsername());
+    }
+
+    @Test
+    public void find_by_id_not_found_then_throw_UserProfileNotFoundException() {
+        String id = "xxxx";
+        when(userProfileRepository.findById(id)).thenReturn(Optional.empty());
+
+        UserProfileNotFoundException exception = assertThrows(UserProfileNotFoundException.class,
+                () -> userProfileService.findUserProfileById(id));
+
+        assertEquals("User Profile with xxxx not found", exception.getMessage());
+
     }
 
     @Test
