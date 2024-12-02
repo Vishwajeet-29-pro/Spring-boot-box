@@ -2,6 +2,7 @@ package com.spring.mongo.controller;
 
 import com.spring.mongo.dto.UserProfileRequest;
 import com.spring.mongo.dto.UserProfileResponse;
+import com.spring.mongo.exception.UserProfileNotFoundException;
 import com.spring.mongo.service.UserProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -53,7 +54,9 @@ public class UserProfileController {
             @ApiResponse(responseCode = "200", description = "User profile retrieved successfully",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserProfileResponse.class))),
-            @ApiResponse(responseCode = "404", description = "User profile not found")
+            @ApiResponse(responseCode = "404", description = "User profile not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserProfileNotFoundException.class)))
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserProfileResponse>> findUserProfileById(@PathVariable("id") String id) {
@@ -66,7 +69,9 @@ public class UserProfileController {
             @ApiResponse(responseCode = "200", description = "User profile updated successfully",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserProfileResponse.class))),
-            @ApiResponse(responseCode = "404", description = "User profile not found")
+            @ApiResponse(responseCode = "404", description = "User profile not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserProfileNotFoundException.class)))
     })
     @PutMapping("/{id}")
     public ResponseEntity<UserProfileResponse> updateUserProfileById(
@@ -77,7 +82,9 @@ public class UserProfileController {
     @Operation(summary = "Delete a user profile by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "User profile deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User profile not found")
+            @ApiResponse(responseCode = "404", description = "User profile not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserProfileNotFoundException.class)))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserProfileById(@PathVariable("id") String id) {
