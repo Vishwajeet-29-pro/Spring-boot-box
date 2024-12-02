@@ -111,6 +111,15 @@ class UserProfileServiceTest {
         userProfileRepository.deleteById(id);
 
         verify(userProfileRepository, times(1)).deleteById(id);
+    }
 
+    @Test
+    public void if_user_by_id_not_found_should_throw_Exception() {
+        String id = "xx";
+
+        Exception ex = assertThrows(UserProfileNotFoundException.class,
+                () -> userProfileService.deleteUserProfileById(id));
+
+        assertEquals("User profile with id xx not found", ex.getMessage());
     }
 }
