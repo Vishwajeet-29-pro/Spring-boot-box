@@ -94,6 +94,17 @@ class UserProfileServiceTest {
     }
 
     @Test
+    public void update_by_id_not_found_should_throw_UserProfileNotFoundException() {
+        String id = "xx";
+        when(userProfileRepository.findById(id)).thenReturn(Optional.empty());
+
+        UserProfileNotFoundException ex = assertThrows(UserProfileNotFoundException.class,
+                () -> userProfileService.updateUserProfileById(id, null));
+
+        assertEquals("User Profile with xx not found", ex.getMessage());
+    }
+
+    @Test
     public void delete_user_by_id_should_delete_user_profile() {
         String id = "1";
         doNothing().when(userProfileRepository).deleteById(id);
