@@ -39,7 +39,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse updateCustomerById(Integer id, CustomerRequest customerRequest) {
-        Customer customer = customerRepository.getReferenceById(id);
+        Customer customer = customerRepository.findById(id).orElseThrow(
+                () -> new CustomerNotFoundException("Customer with id: "+id+" not found")
+        );
         customer.setCustomerName(customer.getCustomerName());
         customer.setEmail(customerRequest.getEmail());
         customer.setPhone(customerRequest.getPhone());
