@@ -83,7 +83,7 @@ class CustomerServiceTest {
     @Test
     public void update_by_id_should_update_customer_details_and_return_customer_details() {
         CustomerRequest customerRequest = new CustomerRequest("John Wick","john.wick20@springbox.com","8833224455","New York");
-        when(customerRepository.getReferenceById(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findById(any(Integer.class))).thenReturn(Optional.of(customer));
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerResponse customerResponse = customerService.updateCustomerById(customer.getId(), customerRequest);
