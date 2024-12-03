@@ -2,6 +2,7 @@ package com.spring.mysql.service;
 
 import com.spring.mysql.dto.CustomerRequest;
 import com.spring.mysql.dto.CustomerResponse;
+import com.spring.mysql.exception.CustomerNotFoundException;
 import com.spring.mysql.model.Customer;
 import com.spring.mysql.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse getCustomerById(Integer id) {
-        Customer customer = customerRepository.getReferenceById(id);
+        Customer customer = customerRepository.findById(id).orElseThrow(
+                () -> new CustomerNotFoundException("Customer with id: "+id+" not found")
+        );
         return CustomerResponse.toCustomerResponse(customer);
     }
 
