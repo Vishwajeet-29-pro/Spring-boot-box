@@ -95,6 +95,16 @@ class CustomerServiceTest {
     }
 
     @Test
+    public void when_id_not_found_should_throw_exception() {
+        Integer id = 22;
+        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(CustomerNotFoundException.class,
+                () -> customerService.updateCustomerById(id, null));
+        assertEquals("Customer with id: 22 not found", exception.getMessage());
+    }
+
+    @Test
     public void delete_by_id_should_delete_customer_details_returns_nothing() {
         Integer id = 1;
         when(customerRepository.existsById(id)).thenReturn(true);
