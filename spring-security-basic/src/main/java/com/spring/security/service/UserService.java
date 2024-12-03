@@ -3,6 +3,7 @@ package com.spring.security.service;
 import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.exception.UserNotFoundException;
+import com.spring.security.model.Role;
 import com.spring.security.model.User;
 import com.spring.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,13 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(UserResponse::userResponse)
                 .toList();
+    }
+
+    public UserResponse updateRoleById(String username, Role role) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("User with username: "+username+" not found")
+        );
+        user.setRole(role);
+        return UserResponse.userResponse(userRepository.save(user));
     }
 }
