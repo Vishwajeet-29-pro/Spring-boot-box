@@ -143,4 +143,16 @@ class UserServiceTest {
         assertEquals("encryptedPassword", userResponses.getFirst().getPassword());
         assertEquals(Role.USER, userResponses.getFirst().getRole());
     }
+
+    @Test
+    public void update_role_by_username_should_update_role() {
+        String user = "john";
+        when(userRepository.findByUsername(user)).thenReturn(Optional.of(mockUser));
+        mockUser.setRole(Role.ADMIN);
+        when(userRepository.save(mockUser)).thenReturn(mockUser);
+
+        UserResponse userResponse = userService.updateRoleById(user, Role.ADMIN);
+
+        assertEquals(Role.ADMIN, userResponse.getRole());
+    }
 }
