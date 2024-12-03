@@ -112,4 +112,14 @@ class CustomerServiceTest {
 
         verify(customerRepository, times(1)).deleteById(id);
     }
+
+    @Test
+    public void delete_by_id_not_found_should_throw_exception() {
+        Integer id = 22;
+        when(customerRepository.existsById(id)).thenReturn(false);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> customerService.deleteCustomerById(id));
+        assertEquals("Customer not found", exception.getMessage());
+    }
 }
