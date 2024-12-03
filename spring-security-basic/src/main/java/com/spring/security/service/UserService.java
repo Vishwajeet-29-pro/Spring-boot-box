@@ -51,6 +51,8 @@ public class UserService {
     }
 
     public List<UserResponse> findAllUsers() {
-        return List.of();
+        return userRepository.findAll().stream()
+                .map(UserResponse::userResponse)
+                .toList();
     }
 }
