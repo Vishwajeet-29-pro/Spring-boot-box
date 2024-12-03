@@ -120,4 +120,14 @@ class UserServiceTest {
 
         assertEquals("User with id 22 not found", exception.getMessage());
     }
+
+    @Test
+    public void delete_by_should_delete_user() {
+        Long id = 1L;
+        when(userRepository.existsById(id)).thenReturn(true);
+        userService.deleteUserById(id);
+
+        verify(userRepository).deleteById(id);
+
+    }
 }
