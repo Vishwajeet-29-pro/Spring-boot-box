@@ -41,4 +41,8 @@ public class UserService {
         User updatedUser = userRepository.save(user);
         return UserResponse.userResponse(updatedUser);
     }
+
+    public void deleteUserById(Long id) {
+
+    }
 }
