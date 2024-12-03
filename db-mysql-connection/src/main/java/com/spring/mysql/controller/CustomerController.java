@@ -2,6 +2,7 @@ package com.spring.mysql.controller;
 
 import com.spring.mysql.dto.CustomerRequest;
 import com.spring.mysql.dto.CustomerResponse;
+import com.spring.mysql.dto.ErrorResponse;
 import com.spring.mysql.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -55,7 +56,8 @@ public class CustomerController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CustomerResponse.class))),
             @ApiResponse(responseCode = "404", description = "Customer not found",
-                    content = @Content)
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponse> findCustomerDetailsById(@PathVariable("id") Integer customerId) {
@@ -71,7 +73,8 @@ public class CustomerController {
             @ApiResponse(responseCode = "400", description = "Invalid input provided",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Customer not found",
-                    content = @Content)
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PutMapping("/{id}")
     public ResponseEntity<CustomerResponse> updateCustomerById(
@@ -87,7 +90,8 @@ public class CustomerController {
             @ApiResponse(responseCode = "204", description = "Customer deleted successfully",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Customer not found",
-                    content = @Content)
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
