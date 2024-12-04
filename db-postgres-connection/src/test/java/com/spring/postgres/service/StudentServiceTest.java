@@ -82,7 +82,7 @@ class StudentServiceTest {
     @Test
     public void update_student_by_id_should_return_updated_student() {
         StudentRequest studentRequest = new StudentRequest("Vishwajeet Kotkar", "vishwajeet.kotkar29@springbox.com",25);
-        when(studentRepository.getReferenceById(any(Integer.class))).thenReturn(student);
+        when(studentRepository.findById(any(Integer.class))).thenReturn(Optional.of(student));
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
         student.setEmail("vishwajeet.kotkar29@springbox.com");
