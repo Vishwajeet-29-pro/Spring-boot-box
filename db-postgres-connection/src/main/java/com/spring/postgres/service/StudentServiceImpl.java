@@ -40,7 +40,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse updateStudentById(Integer studentId, StudentRequest studentRequest) {
-        Student student = studentRepository.getReferenceById(studentId);
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with id:"+studentId));
         student.setStudentName(studentRequest.getName());
         student.setEmail(studentRequest.getEmail());
         student.setAge(studentRequest.getAge());
