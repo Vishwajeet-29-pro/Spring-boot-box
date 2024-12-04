@@ -2,6 +2,7 @@ package com.spring.postgres.service;
 
 import com.spring.postgres.dto.StudentRequest;
 import com.spring.postgres.dto.StudentResponse;
+import com.spring.postgres.exception.StudentNotFoundException;
 import com.spring.postgres.model.Student;
 import com.spring.postgres.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,7 +60,7 @@ class StudentServiceTest {
 
     @Test
     public void get_by_id_should_return_student_response() {
-        when(studentRepository.getReferenceById(any(Integer.class))).thenReturn(student);
+        when(studentRepository.findById(any(Integer.class))).thenReturn(Optional.of(student));
 
         StudentResponse studentResponse = studentService.findStudentById(student.getId());
 
@@ -67,9 +69,20 @@ class StudentServiceTest {
     }
 
     @Test
+    public void student_by_id_not_found_should_throw_exception() {
+        Integer studentId = 3333;
+        when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(StudentNotFoundException.class,
+                () -> studentService.findStudentById(studentId)
+        );
+        assertEquals("Student not found with id: 3333", exception.getMessage());
+    }
+
+    @Test
     public void update_student_by_id_should_return_updated_student() {
         StudentRequest studentRequest = new StudentRequest("Vishwajeet Kotkar", "vishwajeet.kotkar29@springbox.com",25);
-        when(studentRepository.getReferenceById(any(Integer.class))).thenReturn(student);
+        when(studentRepository.findById(any(Integer.class))).thenReturn(Optional.of(student));
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
         student.setEmail("vishwajeet.kotkar29@springbox.com");
@@ -81,13 +94,32 @@ class StudentServiceTest {
     }
 
     @Test
-    public void delete_student_by_should_delete_student_details() {
+    public void update_student_by_id_not_found_should_throw_exception() {
+        Integer id = 3333;
+        when(studentRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(StudentNotFoundException.class,
+                ()-> studentService.updateStudentById(id, null));
+        assertEquals("Student not found with id:"+id, exception.getMessage());
+    }
+
+    @Test
+    public void delete_student_by_id_should_delete_student_details() {
         Integer studentId = 1;
         when(studentRepository.existsById(studentId)).thenReturn(true);
 
         studentService.deleteStudentById(studentId);
 
         verify(studentRepository, times(1)).deleteById(studentId);
+    }
 
+    @Test
+    public void delete_student_by_id_not_found_should_throw_exception() {
+        Integer studentId = 3333;
+        when(studentRepository.existsById(studentId)).thenReturn(false);
+        Exception exception = assertThrows(StudentNotFoundException.class,
+                () -> studentService.deleteStudentById(studentId));
+
+        assertEquals("Student not found with id: 3333", exception.getMessage());
     }
 }

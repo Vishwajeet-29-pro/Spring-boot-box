@@ -2,6 +2,7 @@ package com.spring.mongo.service;
 
 import com.spring.mongo.dto.UserProfileRequest;
 import com.spring.mongo.dto.UserProfileResponse;
+import com.spring.mongo.exception.UserProfileNotFoundException;
 import com.spring.mongo.model.UserProfile;
 import com.spring.mongo.repository.UserProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public Optional<UserProfileResponse> findUserProfileById(String id) {
-        UserProfile userProfile = userProfileRepository.findById(id).orElseThrow();
+        UserProfile userProfile = userProfileRepository.findById(id).orElseThrow(
+                () -> new UserProfileNotFoundException("User Profile with "+id+" not found")
+        );
         return Optional.of(UserProfileResponse.userProfileResponse(userProfile));
     }
 
@@ -48,14 +51,14 @@ public class UserProfileServiceImpl implements UserProfileService {
             UserProfile updatedUserProfile = userProfileRepository.save(userProfile);
             return UserProfileResponse.userProfileResponse(updatedUserProfile);
         } else {
-            throw new RuntimeException("User Profile not found");
+            throw new UserProfileNotFoundException("User Profile with "+id+" not found");
         }
     }
 
     @Override
     public void deleteUserProfileById(String id) {
         if (!userProfileRepository.existsById(id)) {
-            throw new RuntimeException("User profile with id "+id+" not found");
+            throw new UserProfileNotFoundException("User profile with id "+id+" not found");
         }
         userProfileRepository.deleteById(id);
     }

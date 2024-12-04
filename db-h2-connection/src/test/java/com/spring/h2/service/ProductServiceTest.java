@@ -2,6 +2,7 @@ package com.spring.h2.service;
 
 import com.spring.h2.dto.ProductRequest;
 import com.spring.h2.dto.ProductResponse;
+import com.spring.h2.exception.ProductNotFoundException;
 import com.spring.h2.model.Product;
 import com.spring.h2.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,7 +61,7 @@ class ProductServiceTest {
 
     @Test
     public void get_by_id_should_return_one_product() {
-        when(productRepository.getReferenceById(any(Integer.class))).thenReturn(product);
+        when(productRepository.findById(any(Integer.class))).thenReturn(Optional.of(product));
 
         ProductResponse productResponse = productService.getProductById(product.getId());
 
@@ -67,15 +69,41 @@ class ProductServiceTest {
     }
 
     @Test
+    public void when_product_not_found_should_throw_product_not_found_exception() {
+        int id = 33;
+        when(productRepository.findById(id)).thenReturn(Optional.empty());
+
+        ProductNotFoundException exception = assertThrows(
+                ProductNotFoundException.class,
+                () -> productService.getProductById(id)
+        );
+        assertEquals("Product with Id 33 not found", exception.getMessage());
+        verify(productRepository, times(1)).findById(id);
+    }
+
+    @Test
     public void update_by_id_should_update_product_return_updated_product() {
         ProductRequest productRequest = new ProductRequest("Mobile","Mobile under 20000",19999, 90);
-        when(productRepository.getReferenceById(any(Integer.class))).thenReturn(product);
+        when(productRepository.findById(any(Integer.class))).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         product.setProductQuantity(90);
 
         ProductResponse updatedProduct = productService.updateProductById(product.getId(), productRequest);
         assertEquals(90, updatedProduct.getProductQuantity());
+    }
+
+    @Test
+    public void if_product_by_id_not_found_should_throw_ProductNotFoundException() {
+        int id = 33;
+        ProductRequest productRequest = new ProductRequest("Mobile","Mobile under 20000",19999, 90);
+        when(productRepository.findById(id)).thenReturn(Optional.empty());
+
+        ProductNotFoundException exception = assertThrows(
+                ProductNotFoundException.class,
+                () -> productService.updateProductById(id, productRequest)
+        );
+        assertEquals("Product with id 33 not found", exception.getMessage());
     }
 
     @Test
@@ -87,5 +115,16 @@ class ProductServiceTest {
 
         verify(productRepository, times(1)).deleteById(productId);
 
+    }
+
+    @Test
+    public void if_id_not_found_throw_illegal_argument_exception() {
+        int productId = 22;
+        when(productRepository.existsById(productId)).thenReturn(false);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> productService.deleteProductById(productId)
+        );
+        assertEquals("Product not found", exception.getMessage());
     }
 }

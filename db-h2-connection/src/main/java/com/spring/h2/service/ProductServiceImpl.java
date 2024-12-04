@@ -2,6 +2,7 @@ package com.spring.h2.service;
 
 import com.spring.h2.dto.ProductRequest;
 import com.spring.h2.dto.ProductResponse;
+import com.spring.h2.exception.ProductNotFoundException;
 import com.spring.h2.model.Product;
 import com.spring.h2.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +32,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProductById(int productId) {
-        Product product = productRepository.getReferenceById(productId);
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new ProductNotFoundException("Product with Id "+productId+" not found")
+        );
         return ProductResponse.toProductResponse(product);
     }
 
     @Override
     public ProductResponse updateProductById(int id, ProductRequest productRequest) {
-        Product toUpdate = productRepository.getReferenceById(id);
+        Product toUpdate = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id "+id+" not found"));
         toUpdate.setProductName(productRequest.getProductName());
         toUpdate.setDescription(productRequest.getDescription());
         toUpdate.setProductPrice(productRequest.getProductPrice());
