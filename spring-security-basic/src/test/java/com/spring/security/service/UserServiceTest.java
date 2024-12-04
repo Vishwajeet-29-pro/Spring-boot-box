@@ -179,4 +179,12 @@ class UserServiceTest {
         boolean isUsernameExists = userService.usernameExists(username);
         assertFalse(isUsernameExists);
     }
+
+    @Test
+    public void username_exists_should_return_true() {
+        String username = "john";
+        when(userRepository.existsByUsername(username)).thenReturn(true);
+        boolean exists = userService.usernameExists(username);
+        assertTrue(exists);
+    }
 }
