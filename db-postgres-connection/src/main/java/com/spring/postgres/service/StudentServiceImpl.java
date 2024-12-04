@@ -2,6 +2,7 @@ package com.spring.postgres.service;
 
 import com.spring.postgres.dto.StudentRequest;
 import com.spring.postgres.dto.StudentResponse;
+import com.spring.postgres.exception.StudentNotFoundException;
 import com.spring.postgres.model.Student;
 import com.spring.postgres.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse findStudentById(Integer studentId) {
-        Student student = studentRepository.getReferenceById(studentId);
+        Student student = studentRepository.findById(studentId).orElseThrow(
+                () -> new StudentNotFoundException("Student not found with id: "+studentId)
+        );
         return StudentResponse.toStudentResponse(student);
     }
 
