@@ -171,4 +171,12 @@ class UserServiceTest {
 
         assertEquals(encodedPassword, mockUser.getPassword());
     }
+
+    @Test
+    public void username_not_found_should_return_false() {
+        String username = "xx";
+        when(userRepository.existsByUsername(username)).thenReturn(false);
+        boolean isUsernameExists = userService.usernameExists(username);
+        assertFalse(isUsernameExists);
+    }
 }
