@@ -72,4 +72,8 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
     }
+
+    public boolean usernameExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }
