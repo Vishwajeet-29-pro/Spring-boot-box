@@ -17,6 +17,7 @@ spring-boot-box/
 ├── db-h2-connection/            # Module for H2 database integration
 ├── db-postgres-connection/      # Module for PostgreSQL integration
 ├── db-mysql-connection/         # Module for MySQL integration
+├── db-mongo-connection/         # Module for MongoDB integration
 ├── (future modules...)          # Additional modules for extended functionalities
 ```
 
@@ -67,6 +68,15 @@ choco install make
     - Full MySQL database support for production use.
     - Comprehensive CRUD APIs.
     - Extensive testing for all operations.
+ 
+### **4. db-mongodb-connection**
+
+- **Purpose**: Demonstrates integration with MongoDB, a NoSQL database.
+- **Features**:
+    - Flexible schema design for NoSQL use cases.
+    - RESTful APIs for CRUD operations.
+    - Comprehensive test cases to ensure functionality.
+    - Suitable for projects requiring horizontal scalability.
 
 ---
 
@@ -74,8 +84,9 @@ choco install make
 
 ### Planned Modules:
 
-1. **MongoDB Integration**:
-    - Learn and implement NoSQL database concepts.
+1. **Spring Security Integration**:
+    - Implement basic authentication and authorization.
+    - Secure endpoints using Spring Security features.
 2. **Reactive Programming with WebFlux**:
     - Add R2DBC for reactive database operations.
 3. **Advanced Functionalities**:
