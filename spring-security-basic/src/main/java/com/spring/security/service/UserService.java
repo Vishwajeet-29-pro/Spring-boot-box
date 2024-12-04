@@ -64,4 +64,12 @@ public class UserService {
         user.setRole(role);
         return UserResponse.userResponse(userRepository.save(user));
     }
+
+    public void resetPassword(String username, String newPassword) {
+            User user = userRepository.findByUsername(username).orElseThrow(
+                    () -> new UserNotFoundException("User with username: "+username+" not found")
+            );
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+    }
 }
