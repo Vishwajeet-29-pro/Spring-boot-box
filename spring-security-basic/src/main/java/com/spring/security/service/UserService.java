@@ -57,7 +57,7 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponse updateRoleById(String username, Role role) {
+    public UserResponse updateRoleByUsername(String username, Role role) {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundException("User with username: "+username+" not found")
         );

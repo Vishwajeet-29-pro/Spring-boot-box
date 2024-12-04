@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -151,7 +150,7 @@ class UserServiceTest {
         mockUser.setRole(Role.ADMIN);
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
-        UserResponse userResponse = userService.updateRoleById(user, Role.ADMIN);
+        UserResponse userResponse = userService.updateRoleByUsername(user, Role.ADMIN);
 
         assertEquals(Role.ADMIN, userResponse.getRole());
     }
