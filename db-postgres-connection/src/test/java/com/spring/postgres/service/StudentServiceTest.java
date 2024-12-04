@@ -60,7 +60,7 @@ class StudentServiceTest {
 
     @Test
     public void get_by_id_should_return_student_response() {
-        when(studentRepository.getReferenceById(any(Integer.class))).thenReturn(student);
+        when(studentRepository.findById(any(Integer.class))).thenReturn(Optional.of(student));
 
         StudentResponse studentResponse = studentService.findStudentById(student.getId());
 
