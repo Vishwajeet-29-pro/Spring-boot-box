@@ -1,8 +1,8 @@
 package com.spring.postgres.controller;
 
+import com.spring.postgres.dto.ErrorResponse;
 import com.spring.postgres.dto.StudentRequest;
 import com.spring.postgres.dto.StudentResponse;
-import com.spring.postgres.model.Student;
 import com.spring.postgres.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,7 +54,7 @@ public class StudentController {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Student not found",
-                    content = @Content) })
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))) })
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponse> findStudentById(@PathVariable("id") Integer studentId) {
         return ResponseEntity.ok(studentService.findStudentById(studentId));
@@ -68,7 +68,7 @@ public class StudentController {
             @ApiResponse(responseCode = "400", description = "Invalid input provided",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Student not found",
-                    content = @Content) })
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))) })
     @PutMapping("/{id}")
     public ResponseEntity<StudentResponse> updateStudentById(
             @PathVariable("id") Integer studentId,
@@ -82,7 +82,7 @@ public class StudentController {
             @ApiResponse(responseCode = "204", description = "Student deleted successfully",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Student not found",
-                    content = @Content) })
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudentById(@PathVariable("id") Integer studentId) {
        studentService.deleteStudentById(studentId);
