@@ -94,6 +94,16 @@ class StudentServiceTest {
     }
 
     @Test
+    public void update_student_by_id_not_found_should_throw_exception() {
+        Integer id = 3333;
+        when(studentRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(StudentNotFoundException.class,
+                ()-> studentService.updateStudentById(id, null));
+        assertEquals("Student not found with id:"+id, exception.getMessage());
+    }
+
+    @Test
     public void delete_student_by_should_delete_student_details() {
         Integer studentId = 1;
         when(studentRepository.existsById(studentId)).thenReturn(true);
