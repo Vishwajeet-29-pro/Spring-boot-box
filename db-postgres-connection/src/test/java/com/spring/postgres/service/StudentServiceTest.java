@@ -2,6 +2,7 @@ package com.spring.postgres.service;
 
 import com.spring.postgres.dto.StudentRequest;
 import com.spring.postgres.dto.StudentResponse;
+import com.spring.postgres.exception.StudentNotFoundException;
 import com.spring.postgres.model.Student;
 import com.spring.postgres.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,6 +66,17 @@ class StudentServiceTest {
 
         assertNotNull(studentResponse);
         assertEquals("Vishwajeet Kotkar", studentResponse.getStudentName());
+    }
+
+    @Test
+    public void student_by_id_not_found_should_throw_exception() {
+        Integer studentId = 3333;
+        when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(StudentNotFoundException.class,
+                () -> studentService.findStudentById(studentId)
+        );
+        assertEquals("Student not found with id: 3333", exception.getMessage());
     }
 
     @Test
