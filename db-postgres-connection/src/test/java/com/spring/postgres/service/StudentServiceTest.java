@@ -104,13 +104,22 @@ class StudentServiceTest {
     }
 
     @Test
-    public void delete_student_by_should_delete_student_details() {
+    public void delete_student_by_id_should_delete_student_details() {
         Integer studentId = 1;
         when(studentRepository.existsById(studentId)).thenReturn(true);
 
         studentService.deleteStudentById(studentId);
 
         verify(studentRepository, times(1)).deleteById(studentId);
+    }
 
+    @Test
+    public void delete_student_by_id_not_found_should_throw_exception() {
+        Integer studentId = 3333;
+        when(studentRepository.existsById(studentId)).thenReturn(false);
+        Exception exception = assertThrows(StudentNotFoundException.class,
+                () -> studentService.deleteStudentById(studentId));
+
+        assertEquals("Student not found with id: 3333", exception.getMessage());
     }
 }
