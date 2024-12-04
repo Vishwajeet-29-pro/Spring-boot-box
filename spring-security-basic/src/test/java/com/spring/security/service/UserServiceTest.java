@@ -154,4 +154,21 @@ class UserServiceTest {
 
         assertEquals(Role.ADMIN, userResponse.getRole());
     }
+
+    @Test
+    public void update_password_by_username_not_found() {
+        String username = "john";
+        String newPassword = "newPassword";
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(mockUser));
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        mockUser.setPassword(encodedPassword);
+        when(userRepository.save(mockUser)).thenReturn(mockUser);
+
+        userService.resetPassword(username, newPassword);
+
+        verify(userRepository).findByUsername(username);
+        verify(userRepository).save(mockUser);
+
+        assertEquals(encodedPassword, mockUser.getPassword());
+    }
 }
