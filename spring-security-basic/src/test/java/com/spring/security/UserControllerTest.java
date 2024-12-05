@@ -1,12 +1,23 @@
 package com.spring.security;
 
+import com.spring.security.dto.UserResponse;
+import com.spring.security.model.Role;
 import com.spring.security.service.UserService;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -16,4 +27,19 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldFetchAllUsers_whenAdminRole() throws Exception {
+        when(userService.findAllUsers()).thenReturn(List.of(
+                new UserResponse(1L, "John","", Role.ADMIN),
+                new UserResponse(2L, "Robin", "", Role.USER)
+                ));
+
+        mockMvc.perform(get("/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(2))
+                .andExpect(jsonPath("$[0].username").value("john"))
+                .andExpect(jsonPath("$[1].role").value("ADMIN"));
+    }
 }
