@@ -39,7 +39,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].username").value("john"))
-                .andExpect(jsonPath("$[1].role").value("ADMIN"));
+                .andExpect(jsonPath("$[0].username").value("John"))
+                .andExpect(jsonPath("$[1].role").value("USER"));
     }
 }
