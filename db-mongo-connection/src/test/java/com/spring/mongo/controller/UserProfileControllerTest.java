@@ -1,6 +1,5 @@
 package com.spring.mongo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.mongo.dto.UserProfileRequest;
 import com.spring.mongo.dto.UserProfileResponse;
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserProfileController.class)
+@SuppressWarnings("unused")
 class UserProfileControllerTest {
 
     @Autowired

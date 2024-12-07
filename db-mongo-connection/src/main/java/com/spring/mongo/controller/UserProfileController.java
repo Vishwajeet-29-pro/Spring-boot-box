@@ -20,6 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user-profile")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class UserProfileController {
 
     private final UserProfileService userProfileService;
