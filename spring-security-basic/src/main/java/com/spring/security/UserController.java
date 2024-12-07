@@ -14,12 +14,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponse>> listAllUsers() {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
