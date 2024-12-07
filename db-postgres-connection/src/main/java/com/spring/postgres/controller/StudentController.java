@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class StudentController {
 
     private final StudentService studentService;

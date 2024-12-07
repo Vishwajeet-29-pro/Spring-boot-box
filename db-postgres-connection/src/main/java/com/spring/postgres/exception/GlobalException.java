@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@SuppressWarnings("unused")
 public class GlobalException {
 
     @ExceptionHandler(StudentNotFoundException.class)
