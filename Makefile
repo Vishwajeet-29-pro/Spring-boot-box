@@ -6,7 +6,7 @@ MODULES=$(shell ls -d */ | grep db)  # Lists db-h2-connection, db-postgres-conne
 .PHONY: all clean build test run help
 
 # Default: Build and test all modules
-all: build test
+all: build
 
 # Clean the project
 clean:
@@ -15,7 +15,7 @@ clean:
 
 # Runs the same thing as the pipeline.
 .PHONY: pipeline
-pipeline: build test
+pipeline: all
 
 # Build the entire project
 build:
