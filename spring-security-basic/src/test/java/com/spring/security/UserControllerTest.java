@@ -1,5 +1,6 @@
 package com.spring.security;
 
+import com.spring.security.config.SecurityConfig;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
 import com.spring.security.service.UserService;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
+@Import(SecurityConfig.class)
 class UserControllerTest {
 
     @Autowired
@@ -35,11 +38,19 @@ class UserControllerTest {
                 new UserResponse(2L, "Robin", "", Role.USER)
                 ));
 
-        mockMvc.perform(get("/api/v1/users")
+        mockMvc.perform(get("/api/v1/admin")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].username").value("John"))
                 .andExpect(jsonPath("$[1].role").value("USER"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void shouldReturnForbidden_whenUserTriesToFetchesAllUsers() throws Exception {
+        mockMvc.perform(get("/api/v1/admin")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
     }
 }
