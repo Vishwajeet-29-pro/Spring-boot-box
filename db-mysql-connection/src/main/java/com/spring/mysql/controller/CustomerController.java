@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class CustomerController {
 
     private final CustomerService customerService;

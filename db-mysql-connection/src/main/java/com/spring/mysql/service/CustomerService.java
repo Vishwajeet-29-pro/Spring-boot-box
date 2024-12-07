@@ -6,7 +6,6 @@ import com.spring.mysql.dto.CustomerResponse;
 import java.util.List;
 
 public interface CustomerService {
-
     CustomerResponse createCustomerAccount(CustomerRequest customerRequest);
     List<CustomerResponse> findAllCustomer();
     CustomerResponse getCustomerById(Integer id);
