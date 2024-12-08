@@ -3,6 +3,7 @@ package com.spring.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.security.config.SecurityConfig;
 import com.spring.security.dto.RegisterUserRequest;
+import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
 import com.spring.security.service.UserService;
@@ -61,7 +62,7 @@ class UserControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void shouldUpdateUserDetails_whenAdminRole() throws Exception {
         Long id = 1L;
-        RegisterUserRequest userRequest = new RegisterUserRequest("Roshan","password", Role.USER);
+        UpdateUserRequest userRequest = new UpdateUserRequest("Roshan","password", Role.USER);
         UserResponse userResponse = new UserResponse(id, "Roshan","password", Role.USER);
 
         when(userService.updateUserById(id, userRequest)).thenReturn(userResponse);

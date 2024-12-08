@@ -1,6 +1,7 @@
 package com.spring.security;
 
 import com.spring.security.dto.RegisterUserRequest;
+import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class UserController {
     @PutMapping("/admin/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> updateUserDetailsById(
-            @PathVariable Long id, @RequestBody RegisterUserRequest userRequest
+            @PathVariable Long id, @RequestBody UpdateUserRequest userRequest
     ){
         UserResponse userResponse = userService.updateUserById(id, userRequest);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);

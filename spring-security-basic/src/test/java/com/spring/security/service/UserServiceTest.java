@@ -1,6 +1,7 @@
 package com.spring.security.service;
 
 import com.spring.security.dto.RegisterUserRequest;
+import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.exception.UserNotFoundException;
 import com.spring.security.model.Role;
@@ -83,7 +84,7 @@ class UserServiceTest {
     @Test
     public void updateUserById_shouldReturnUpdatedUser() {
         Long id = 1L;
-        RegisterUserRequest userRequest = new RegisterUserRequest("New John", "new-password", Role.ADMIN);
+        UpdateUserRequest userRequest = new UpdateUserRequest("New John", "new-password", Role.ADMIN);
         User updatedUser = new User(id, "New John", "password123", Role.ADMIN);
         updatedUser.setPassword("new-password");
         when(userRepository.findById(id)).thenReturn(Optional.of(mockUser));
@@ -100,10 +101,11 @@ class UserServiceTest {
     @Test
     public void ifUserNotFound_shouldThrowUserNotFoundException() {
         Long id = 22L;
+        UpdateUserRequest userRequest = new UpdateUserRequest("","", Role.USER);
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> userService.updateUserById(id, mockUserRequest));
+                () -> userService.updateUserById(id, userRequest));
 
         assertEquals("User with 22 not found", exception.getMessage());
     }

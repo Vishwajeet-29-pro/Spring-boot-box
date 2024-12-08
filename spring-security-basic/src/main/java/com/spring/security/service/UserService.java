@@ -1,6 +1,7 @@
 package com.spring.security.service;
 
 import com.spring.security.dto.RegisterUserRequest;
+import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.exception.UserNotFoundException;
 import com.spring.security.model.Role;
@@ -33,7 +34,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with "+username +" not found"));
     }
 
-    public UserResponse updateUserById(Long id, RegisterUserRequest userRequest) {
+    public UserResponse updateUserById(Long id, UpdateUserRequest userRequest) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("User with "+id+" not found")
         );
