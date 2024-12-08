@@ -1,14 +1,13 @@
 package com.spring.security;
 
+import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +22,14 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponse>> listAllUsers() {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @PutMapping("/admin/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponse> updateUserDetailsById(
+            @PathVariable Long id, @RequestBody RegisterUserRequest userRequest
+    ){
+        UserResponse userResponse = userService.updateUserById(id, userRequest);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 }
