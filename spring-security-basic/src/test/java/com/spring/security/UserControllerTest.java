@@ -1,6 +1,8 @@
 package com.spring.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.security.config.SecurityConfig;
+import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
 import com.spring.security.service.UserService;
@@ -18,6 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,5 +55,22 @@ class UserControllerTest {
         mockMvc.perform(get("/api/v1/admin")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void shouldUpdateUserDetails_whenAdminRole() throws Exception {
+        Long id = 1L;
+        RegisterUserRequest userRequest = new RegisterUserRequest("Roshan","password", Role.USER);
+        UserResponse userResponse = new UserResponse(id, "Roshan","password", Role.USER);
+
+        when(userService.updateUserById(id, userRequest)).thenReturn(userResponse);
+
+        mockMvc.perform(put("/api/v1/admin/update/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(userRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("Roshan"))
+                .andExpect(jsonPath("$.role").value(Role.USER.toString()));
     }
 }
