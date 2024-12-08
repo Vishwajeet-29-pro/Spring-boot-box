@@ -20,8 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,5 +72,19 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("Roshan"))
                 .andExpect(jsonPath("$.role").value(Role.USER.toString()));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void shouldUpdateUserRoleByUsername_whenAdminRole() throws Exception {
+        String username = "john";
+        UserResponse userResponse = new UserResponse(1L, "john", "password", Role.ADMIN);
+        when(userService.updateRoleByUsername(username, Role.ADMIN)).thenReturn(userResponse);
+
+        mockMvc.perform(patch("/api/v1/admin/update-role/{username}", username)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(Role.ADMIN)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.role").value(Role.ADMIN.toString()));
     }
 }
