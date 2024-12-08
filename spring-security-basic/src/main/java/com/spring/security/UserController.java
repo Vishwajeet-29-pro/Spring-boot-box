@@ -3,6 +3,7 @@ package com.spring.security;
 import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
+import com.spring.security.model.Role;
 import com.spring.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,14 @@ public class UserController {
     ){
         UserResponse userResponse = userService.updateUserById(id, userRequest);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("/admin/update-role/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponse> updateRoleByUsername(
+            @PathVariable String username,
+            @RequestBody Role role
+            ) {
+        return new ResponseEntity<>(userService.updateRoleByUsername(username, role), HttpStatus.OK);
     }
 }
