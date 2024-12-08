@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -86,5 +87,19 @@ class UserControllerTest {
                 .content(new ObjectMapper().writeValueAsString(Role.ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.role").value(Role.ADMIN.toString()));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void shouldUpdatePassword_whenAdminRole() throws Exception {
+        String username = "john";
+        String password = "new-password";
+
+        doNothing().when(userService).resetPassword(username, password);
+
+        mockMvc.perform(patch("/api/v1/admin/update-password/{username}", username)
+                .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(password)))
+                .andExpect(status().isOk());
     }
 }
