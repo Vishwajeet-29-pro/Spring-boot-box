@@ -113,4 +113,18 @@ class UserControllerTest {
 
         verify(userService).deleteUserById(id);
     }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void findByUsernameShouldReturnUser_whenRoleIsUser() throws Exception {
+        String username = "john";
+        UserResponse userResponse = new UserResponse(1L, "john", Role.USER);
+        when(userService.findByUsername(username)).thenReturn(userResponse);
+
+        mockMvc.perform(get("/api/v1/user/{username}", username)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath("$.username").value(userResponse.getUsername()))
+                .andExpect(jsonPath("$.role").value(userResponse.getRole()));
+    }
 }
