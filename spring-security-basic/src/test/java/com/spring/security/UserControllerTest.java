@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -101,5 +100,17 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(password)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void when_delete_by_should_delete_user() throws Exception {
+        Long id = 1L;
+        doNothing().when(userService).deleteUserById(id);
+
+        mockMvc.perform(delete("/api/v1/admin/delete/{id}", id))
+                .andExpect(status().isNoContent());
+
+        verify(userService).deleteUserById(id);
     }
 }
