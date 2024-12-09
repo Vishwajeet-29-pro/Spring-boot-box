@@ -30,7 +30,7 @@ public class UserService {
 
     public UserResponse findByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.map(UserResponse::userResponse)
+        return user.map(UserResponse::UserResponseWithOutPassword)
                 .orElseThrow(() -> new UserNotFoundException("User with "+username +" not found"));
     }
 
