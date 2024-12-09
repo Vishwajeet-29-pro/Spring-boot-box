@@ -15,6 +15,16 @@ public class UserResponse {
     private String password;
     private Role role;
 
+    public UserResponse(Long id, String username, Role role) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+    }
+
+    public static UserResponse UserResponseWithOutPassword(User user) {
+        return new UserResponse(user.getId(), user.getUsername(), user.getRole());
+    }
+
     public static UserResponse userResponse(User user) {
         return new UserResponse(
                 user.getId(),
