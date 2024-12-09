@@ -52,4 +52,11 @@ public class UserController {
         userService.resetPassword(username, password);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/admin/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
