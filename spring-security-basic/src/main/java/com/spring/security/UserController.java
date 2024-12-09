@@ -43,4 +43,13 @@ public class UserController {
             ) {
         return new ResponseEntity<>(userService.updateRoleByUsername(username, role), HttpStatus.OK);
     }
+
+    @PatchMapping("/admin/update-password/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> resetPasswordByUsername(
+            @PathVariable String username, @RequestBody String password
+    ) {
+        userService.resetPassword(username, password);
+        return ResponseEntity.ok().build();
+    }
 }
