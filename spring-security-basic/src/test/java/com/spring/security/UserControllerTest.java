@@ -2,6 +2,7 @@ package com.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.security.config.SecurityConfig;
+import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
@@ -30,6 +31,20 @@ class UserControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private UserService userService;
+
+    @Test
+    void registerUser_shouldReturnCreatedAndUserResponse() throws Exception {
+        RegisterUserRequest userRequest = new RegisterUserRequest( "john", "password", Role.USER);
+        UserResponse userResponse = new UserResponse(1L, "john", Role.USER);
+        when(userService.createUser(any(RegisterUserRequest.class))).thenReturn(userResponse);
+
+        mockMvc.perform(post("/api/v1/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(userRequest)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.username").value("john"))
+                .andExpect(jsonPath("$.role").value(Role.USER.toString()));
+    }
 
     @Test
     @WithMockUser(roles = "ADMIN")
