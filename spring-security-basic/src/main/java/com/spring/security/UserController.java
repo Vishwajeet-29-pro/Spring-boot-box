@@ -66,4 +66,10 @@ public class UserController {
         UserResponse userResponse = userService.findByUsername(username);
         return new ResponseEntity<>(userResponse, HttpStatus.FOUND);
     }
+
+    @GetMapping("/user/check-username/{username}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Boolean> usernameExists(@PathVariable String username) {
+        return ResponseEntity.ok(userService.usernameExists(username));
+    }
 }
