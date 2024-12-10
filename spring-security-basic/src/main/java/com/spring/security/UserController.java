@@ -3,7 +3,6 @@ package com.spring.security;
 import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
-import com.spring.security.model.User;
 import com.spring.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@SuppressWarnings("unused")
 public class UserController {
 
     private final UserService userService;
