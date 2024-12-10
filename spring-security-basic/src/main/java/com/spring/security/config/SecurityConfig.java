@@ -28,7 +28,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("api/v1/**").permitAll();
+                    authorize.requestMatchers("api/v1/register").permitAll();
                     authorize.requestMatchers("/api/v1/admin").hasRole("ADMIN"); // Only ADMIN
                     authorize.requestMatchers("/api/v1/user/**").hasAnyRole("USER", "ADMIN");
                     authorize.anyRequest().authenticated();
