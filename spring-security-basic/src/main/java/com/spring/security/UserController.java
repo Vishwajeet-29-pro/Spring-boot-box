@@ -1,9 +1,9 @@
 package com.spring.security;
 
-import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
+import com.spring.security.model.User;
 import com.spring.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,5 +58,12 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user/{username}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<UserResponse> findByUsername(@PathVariable String username) {
+        UserResponse userResponse = userService.findByUsername(username);
+        return new ResponseEntity<>(userResponse, HttpStatus.FOUND);
     }
 }
