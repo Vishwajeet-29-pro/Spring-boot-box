@@ -23,8 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
 @Import(SecurityConfig.class)
@@ -142,5 +141,17 @@ class UserControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$.username").value(userResponse.getUsername()))
                 .andExpect(jsonPath("$.role").value(userResponse.getRole().toString()));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void userNameExistsShouldReturnFalse_whenUsernameNotFound() throws Exception {
+        String username = "john";
+        when(userService.usernameExists(username)).thenReturn(false);
+
+        mockMvc.perform(get("/api/v1/user/check-username/{username}", username)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"));
     }
 }
