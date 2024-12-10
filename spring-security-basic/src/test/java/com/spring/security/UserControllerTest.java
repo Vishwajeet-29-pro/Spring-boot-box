@@ -8,6 +8,8 @@ import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
 import com.spring.security.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -123,6 +125,20 @@ class UserControllerTest {
 
         mockMvc.perform(get("/api/v1/user/{username}", username)
                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath("$.username").value(userResponse.getUsername()))
+                .andExpect(jsonPath("$.role").value(userResponse.getRole().toString()));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void findByUsernameShouldReturnUser_whenRoleIsAdmin() throws Exception {
+        String username = "john";
+        UserResponse userResponse = new UserResponse(1L, "john", Role.USER);
+        when(userService.findByUsername(username)).thenReturn(userResponse);
+
+        mockMvc.perform(get("/api/v1/user/{username}", username)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$.username").value(userResponse.getUsername()))
                 .andExpect(jsonPath("$.role").value(userResponse.getRole().toString()));
