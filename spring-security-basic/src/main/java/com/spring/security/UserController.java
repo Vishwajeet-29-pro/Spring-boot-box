@@ -69,7 +69,9 @@ public class UserController {
 
     @GetMapping("/user/check-username/{username}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Boolean> usernameExists(@PathVariable String username) {
-        return ResponseEntity.ok(userService.usernameExists(username));
+    public ResponseEntity<Void> usernameExists(@PathVariable String username) {
+        boolean exists = userService.usernameExists(username);
+        return exists ? ResponseEntity.status(HttpStatus.FOUND).build()
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
