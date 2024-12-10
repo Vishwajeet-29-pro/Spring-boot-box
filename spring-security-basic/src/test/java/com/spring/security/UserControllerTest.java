@@ -151,7 +151,18 @@ class UserControllerTest {
 
         mockMvc.perform(get("/api/v1/user/check-username/{username}", username)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("false"));
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void usernameExistsShouldReturnTrue_whenUsernameFound() throws Exception {
+        String username = "john";
+        when(userService.usernameExists(username)).thenReturn(true);
+
+        mockMvc.perform(get("/api/v1/user/check-username/{username}", username)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isFound());
+
     }
 }
