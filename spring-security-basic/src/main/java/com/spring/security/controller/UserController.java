@@ -1,4 +1,4 @@
-package com.spring.security;
+package com.spring.security.controller;
 
 import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UpdateUserRequest;

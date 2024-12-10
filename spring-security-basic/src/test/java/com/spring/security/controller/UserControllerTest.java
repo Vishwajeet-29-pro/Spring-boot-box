@@ -1,4 +1,4 @@
-package com.spring.security;
+package com.spring.security.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.security.config.SecurityConfig;
