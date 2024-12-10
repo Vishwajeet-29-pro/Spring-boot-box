@@ -125,6 +125,6 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$.username").value(userResponse.getUsername()))
-                .andExpect(jsonPath("$.role").value(userResponse.getRole()));
+                .andExpect(jsonPath("$.role").value(userResponse.getRole().toString()));
     }
 }
