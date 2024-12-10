@@ -1,5 +1,6 @@
 package com.spring.security;
 
+import com.spring.security.dto.RegisterUserRequest;
 import com.spring.security.dto.UpdateUserRequest;
 import com.spring.security.dto.UserResponse;
 import com.spring.security.model.Role;
@@ -19,6 +20,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(@RequestBody RegisterUserRequest userRequest) {
+        UserResponse userResponse = userService.createUser(userRequest);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+    }
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
