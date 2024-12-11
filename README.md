@@ -18,6 +18,7 @@ spring-boot-box/
 ├── db-postgres-connection/      # Module for PostgreSQL integration
 ├── db-mysql-connection/         # Module for MySQL integration
 ├── db-mongo-connection/         # Module for MongoDB integration
+├── spring-security-basic        # Module for Spring security (RBAC)
 ├── (future modules...)          # Additional modules for extended functionalities
 ```
 
@@ -78,13 +79,21 @@ choco install make
     - Comprehensive test cases to ensure functionality.
     - Suitable for projects requiring horizontal scalability.
 
+### **5. spring-security-basic**
+
+-**Purpose**: Kick-start with Spring security (1.0).
+- **Features**: 
+  - A simple application with handle the Role based Access Control.
+  - Created RESTful APIs with Role based authorization.
+  - Created test to handle Role based authorization.
+
 ---
 
 ## Future Plans
 
 ### Planned Modules:
 
-1. **Spring Security Integration**:
+1. **Spring Security Integration 2.0**:
     - Implement basic authentication and authorization.
     - Secure endpoints using Spring Security features.
 2. **Reactive Programming with WebFlux**:
