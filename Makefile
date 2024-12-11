@@ -1,6 +1,7 @@
 # Variables
 GRADLE=./gradlew
-MODULES=$(shell ls -d */ | grep db)  # Lists db-h2-connection, db-postgres-connection, etc.
+EXCLUDED_DIRS=(build src .gradle .git)  # Directories to exclude
+MODULES=$(shell find . -maxdepth 1 -type d -not -path "./*" $(foreach EXCLUDE, $(EXCLUDED_DIRS), -not -name $(EXCLUDE)) -exec basename {} \;)
 
 # Commands
 .PHONY: all clean build test run help
@@ -19,13 +20,8 @@ pipeline: all
 
 # Build the entire project
 build:
-	$(GRADLE) \
-			build \
-			:db-h2-connection:build \
-			:db-postgres-connection:build \
-			:db-mysql-connection:build \
-			:db-mongo-connection:build
-	@echo "Built the entire project."
+	$(GRADLE) build $(foreach MODULE,$(MODULES),:$(MODULE):build)
+	@echo "Built all modules: $(MODULES)"
 
 # Test the entire project
 test:
@@ -54,6 +50,10 @@ run-mysql:
 run-mongodb:
 	$(GRADLE) :db-mongo-connection:bootRun
 	@echo "Running db-mongo-connection module."
+
+run-spring-security-1.0:
+	$(GRADLE) :spring-security-basic
+	@echo "Running spring security basic module."
 
 # Build and test a specific module
 run-module:
