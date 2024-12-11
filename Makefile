@@ -52,7 +52,7 @@ run-mongodb:
 	@echo "Running db-mongo-connection module."
 
 run-spring-security-1.0:
-	$(GRADLE) :spring-security-basic
+	$(GRADLE) :spring-security-basic:bootRun
 	@echo "Running spring security basic module."
 
 # Build and test a specific module
