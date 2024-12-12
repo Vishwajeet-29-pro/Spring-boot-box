@@ -1,6 +1,6 @@
 rootProject.name = "Spring-boot-box"
-include("db-h2-connection")
-include("db-postgres-connection")
-include("db-mysql-connection")
-include("db-mongo-connection")
-include("spring-security-basic")
+include("app-db-h2-connection")
+include("app-db-postgres-connection")
+include("app-db-mysql-connection")
+include("app-db-mongo-connection")
+include("app-spring-security-basic")
