@@ -36,23 +36,23 @@ run:
 
 # Run individual modules
 run-h2:
-	$(GRADLE) :db-h2-connection:bootRun
+	$(GRADLE) :app-db-h2-connection:bootRun
 	@echo "Running db-h2-connection module."
 
 run-postgres:
-	$(GRADLE) :db-postgres-connection:bootRun
+	$(GRADLE) :app-db-postgres-connection:bootRun
 	@echo "Running db-postgres-connection module."
 
 run-mysql:
-	$(GRADLE) :db-mysql-connection:bootRun
+	$(GRADLE) :app-db-mysql-connection:bootRun
 	@echo "Running db-mysql-connection module."
 
 run-mongodb:
-	$(GRADLE) :db-mongo-connection:bootRun
+	$(GRADLE) :app-db-mongo-connection:bootRun
 	@echo "Running db-mongo-connection module."
 
 run-spring-security-1.0:
-	$(GRADLE) :spring-security-basic:bootRun
+	$(GRADLE) :app-spring-security-basic:bootRun
 	@echo "Running spring security basic module."
 
 # Build and test a specific module
