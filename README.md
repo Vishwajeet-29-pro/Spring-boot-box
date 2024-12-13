@@ -81,7 +81,7 @@ choco install make
 
 ### **5. app-spring-security-basic**
 
--**Purpose**: Kick-start with Spring security (1.0).
+- **Purpose**: Kick-start with Spring security (1.0).
 - **Features**: 
   - A simple application with handle the Role based Access Control.
   - Created RESTful APIs with Role based authorization.
