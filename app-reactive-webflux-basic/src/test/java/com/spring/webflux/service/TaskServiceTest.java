@@ -107,4 +107,26 @@ class TaskServiceTest {
 
         verify(taskRepository, times(1)).findById(1L);
     }
+
+    @Test
+    void test_update_task_by_id_should_update_task_and_return_updated_task() {
+        Task updatedTask = new Task(1L, "Add Service layer code", "Adding tests for update by id",
+                Status.IN_PROGRESS,
+                LocalDateTime.of(2024, 12,21, 8, 0, 0),
+                LocalDateTime.of(2024, 12,21, 8, 0, 0));
+        TaskRequest updateRequest = new TaskRequest("Add Service layer code", "Adding tests for update by id", Status.IN_PROGRESS);
+
+        when(taskRepository.findById(1L)).thenReturn(Mono.just(task));
+        when(taskRepository.save(any(Task.class))).thenReturn(Mono.just(updatedTask));
+
+        Mono<TaskResponse> updatedTaskResponse = taskService.updateTaskById(1L, updateRequest);
+
+        StepVerifier.create(updatedTaskResponse)
+                .consumeNextWith(taskResponse -> {
+                    assertEquals("Add Service layer code", taskResponse.getTitle());
+                    assertEquals("Adding tests for update by id", taskResponse.getDescription());
+                }).verifyComplete();
+        verify(taskRepository, times(1)).findById(1L);
+        verify(taskRepository, times(1)).save(any(Task.class));
+    }
 }
