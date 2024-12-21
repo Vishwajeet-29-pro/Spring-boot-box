@@ -129,4 +129,18 @@ class TaskServiceTest {
         verify(taskRepository, times(1)).findById(1L);
         verify(taskRepository, times(1)).save(any(Task.class));
     }
+
+    @Test
+    void test_update_task_by_id_not_found_should_throw_task_not_found_exception() {
+        when(taskRepository.findById(1L)).thenReturn(Mono.empty());
+
+        Mono<TaskResponse> updatedTaskResponse = taskService.updateTaskById(1L, taskRequest);
+
+        StepVerifier.create(updatedTaskResponse)
+                .expectErrorMatches(throwable -> throwable instanceof TaskNotFoundException &&
+                        throwable.getMessage().equals("Task with ID 1 not found"))
+                .verify();
+
+        verify(taskRepository, times(1)).findById(1L);
+    }
 }
