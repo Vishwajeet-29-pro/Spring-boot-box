@@ -14,11 +14,12 @@ spring-boot-box/
 ├── gradlew.bat                  # Gradle wrapper for Windows
 ├── build.gradle.kts             # Root Gradle configuration
 ├── README.md                    # Project documentation
-├── db-h2-connection/            # Module for H2 database integration
-├── db-postgres-connection/      # Module for PostgreSQL integration
-├── db-mysql-connection/         # Module for MySQL integration
-├── db-mongo-connection/         # Module for MongoDB integration
-├── (future modules...)          # Additional modules for extended functionalities
+├── app-db-h2-connection/            # Module for H2 database integration
+├── app-db-postgres-connection/      # Module for PostgreSQL integration
+├── app-db-mysql-connection/         # Module for MySQL integration
+├── app-db-mongo-connection/         # Module for MongoDB integration
+├── app-spring-security-basic        # Module for Spring security (RBAC)
+├── app-(future modules...)          # Additional modules for extended functionalities
 ```
 
 ---
@@ -45,7 +46,7 @@ choco install make
 
 ## Current Modules
 
-### **1. db-h2-connection**
+### **1. app-db-h2-connection**
 
 - **Purpose**: Demonstrates integration with H2, an in-memory database.
 - **Features**:
@@ -53,7 +54,7 @@ choco install make
     - RESTful APIs for CRUD operations.
     - End-to-end tests for each feature.
 
-### **2. db-postgres-connection**
+### **2. app-db-postgres-connection**
 
 - **Purpose**: Demonstrates integration with PostgreSQL.
 - **Features**:
@@ -61,7 +62,7 @@ choco install make
     - Proper connection pooling and configuration.
     - RESTful APIs and corresponding test cases.
 
-### **3. db-mysql-connection**
+### **3. app-db-mysql-connection**
 
 - **Purpose**: Demonstrates integration with MySQL.
 - **Features**:
@@ -69,7 +70,7 @@ choco install make
     - Comprehensive CRUD APIs.
     - Extensive testing for all operations.
  
-### **4. db-mongodb-connection**
+### **4. app-db-mongodb-connection**
 
 - **Purpose**: Demonstrates integration with MongoDB, a NoSQL database.
 - **Features**:
@@ -78,13 +79,21 @@ choco install make
     - Comprehensive test cases to ensure functionality.
     - Suitable for projects requiring horizontal scalability.
 
+### **5. app-spring-security-basic**
+
+- **Purpose**: Kick-start with Spring security (1.0).
+- **Features**: 
+  - A simple application with handle the Role based Access Control.
+  - Created RESTful APIs with Role based authorization.
+  - Created test to handle Role based authorization.
+
 ---
 
 ## Future Plans
 
 ### Planned Modules:
 
-1. **Spring Security Integration**:
+1. **Spring Security Integration 2.0**:
     - Implement basic authentication and authorization.
     - Secure endpoints using Spring Security features.
 2. **Reactive Programming with WebFlux**:
