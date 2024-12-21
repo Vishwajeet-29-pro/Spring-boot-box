@@ -77,4 +77,19 @@ class TaskServiceTest {
 
         verify(taskRepository, times(1)).findAll();
     }
+
+    @Test
+    void test_find_by_id_should_return_task_response_with_id() {
+        when(taskRepository.findById(anyLong())).thenReturn(Mono.just(task));
+
+        Mono<TaskResponse> taskResponseMono = taskService.findTaskById(1L);
+
+        StepVerifier.create(taskResponseMono)
+                .consumeNextWith(taskResponse -> {
+                    assertEquals("Add service layer", taskResponse.getTitle(), "The title should match");
+                })
+                .verifyComplete();
+
+        verify(taskRepository, times(1)).findById(1L);
+    }
 }
