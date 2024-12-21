@@ -143,4 +143,18 @@ class TaskServiceTest {
 
         verify(taskRepository, times(1)).findById(1L);
     }
+
+    @Test
+    void test_delete_task_by_id_should_delete_task() {
+        when(taskRepository.findById(1L)).thenReturn(Mono.just(task));
+        when(taskRepository.deleteById(1L)).thenReturn(Mono.empty());
+
+        Mono<Void> result = taskService.deleteTaskById(1L);
+
+        StepVerifier.create(result)
+                .verifyComplete();
+
+        verify(taskRepository, times(1)).findById(1L);
+        verify(taskRepository, times(1)).deleteById(1L);
+    }
 }
