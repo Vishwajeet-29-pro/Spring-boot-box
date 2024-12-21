@@ -2,6 +2,7 @@ package com.spring.webflux.service;
 
 import com.spring.webflux.dto.TaskRequest;
 import com.spring.webflux.dto.TaskResponse;
+import com.spring.webflux.exception.TaskNotFoundException;
 import com.spring.webflux.model.Status;
 import com.spring.webflux.model.Task;
 import com.spring.webflux.repository.TaskRepository;
@@ -89,6 +90,20 @@ class TaskServiceTest {
                     assertEquals("Add service layer", taskResponse.getTitle(), "The title should match");
                 })
                 .verifyComplete();
+
+        verify(taskRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void test_if_find_task_by_id_not_found_should_throw_task_not_found_exception() {
+        when(taskRepository.findById(1L)).thenReturn(Mono.empty());
+
+        Mono<TaskResponse> taskResponseMono = taskService.findTaskById(1L);
+
+        StepVerifier.create(taskResponseMono)
+                .expectErrorMatches(throwable -> throwable instanceof TaskNotFoundException
+                    && throwable.getMessage().equals("Task with ID 1 not found"))
+                .verify();
 
         verify(taskRepository, times(1)).findById(1L);
     }
