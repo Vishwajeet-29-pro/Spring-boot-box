@@ -57,7 +57,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Mono<?> deleteTaskById(Long id) {
-        return null;
+    public Mono<Void> deleteTaskById(Long id) {
+        return taskRepository.findById(id)
+                .switchIfEmpty(Mono.error(new TaskNotFoundException("Task with ID " + id + " not found")))
+                .flatMap(existingTask -> taskRepository.deleteById(existingTask.getId()));
     }
 }
