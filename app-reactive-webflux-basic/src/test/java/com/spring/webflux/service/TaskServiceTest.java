@@ -8,9 +8,9 @@ import com.spring.webflux.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -61,5 +61,20 @@ class TaskServiceTest {
                 .verifyComplete();
 
         verify(taskRepository, times(1)).save(any(Task.class));
+    }
+
+    @Test
+    void test_find_all_task_should_return_list_of_task_response() {
+        when(taskRepository.findAll()).thenReturn(Flux.just(task));
+
+        Flux<TaskResponse> taskResponseFlux = taskService.findAll();
+        
+        StepVerifier.create(taskResponseFlux)
+                .consumeNextWith(taskResponse -> {
+                    assertEquals("Add service layer", taskResponse.getTitle(), "The title should match");
+                })
+                .verifyComplete();
+
+        verify(taskRepository, times(1)).findAll();
     }
 }
