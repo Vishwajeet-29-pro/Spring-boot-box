@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -40,7 +42,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Mono<TaskResponse> updateTaskById(Long id, TaskRequest taskRequest) {
-        return null;
+        Mono<Task> task = taskRepository.findById(id).switchIfEmpty(Mono.error(
+                new TaskNotFoundException("Task with ID " + id + " not found")
+        )).flatMap(existingTask -> {
+            existingTask.setTitle(taskRequest.getTitle());
+            existingTask.setDescription(taskRequest.getDescription());
+            existingTask.setStatus(taskRequest.getStatus());
+            existingTask.setUpdatedAt(LocalDateTime.now());
+
+            return taskRepository.save(existingTask);
+        });
+
+        return task.map(TaskResponse::toTaskResponse);
     }
 
     @Override
