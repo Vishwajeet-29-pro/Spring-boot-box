@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -24,8 +22,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Flux<List<TaskResponse>> findAll() {
-        return null;
+    public Flux<TaskResponse> findAll() {
+        Flux<Task> taskFlux = taskRepository.findAll();
+        return taskFlux.map(TaskResponse::toTaskResponse);
     }
 
     @Override
