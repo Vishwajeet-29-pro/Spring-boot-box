@@ -2,6 +2,7 @@ package com.spring.webflux.service;
 
 import com.spring.webflux.dto.TaskRequest;
 import com.spring.webflux.dto.TaskResponse;
+import com.spring.webflux.exception.TaskNotFoundException;
 import com.spring.webflux.model.Task;
 import com.spring.webflux.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Mono<TaskResponse> findTaskById(Long id) {
         Mono<Task> task = taskRepository.findById(id);
-        return task.map(TaskResponse::toTaskResponse);
+        return task
+                .map(TaskResponse::toTaskResponse)
+                .switchIfEmpty(Mono.error(
+                        new TaskNotFoundException("Task with ID " + id + " not found")
+                ));
     }
 
     @Override
