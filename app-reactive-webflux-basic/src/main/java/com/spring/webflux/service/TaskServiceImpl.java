@@ -29,7 +29,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Mono<TaskResponse> findTaskById(Long id) {
-        return null;
+        Mono<Task> task = taskRepository.findById(id);
+        return task.map(TaskResponse::toTaskResponse);
     }
 
     @Override
