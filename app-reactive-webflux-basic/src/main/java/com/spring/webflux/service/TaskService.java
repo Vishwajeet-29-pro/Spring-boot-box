@@ -11,5 +11,5 @@ public interface TaskService {
     Flux<TaskResponse> findAll();
     Mono<TaskResponse> findTaskById(Long id);
     Mono<TaskResponse> updateTaskById(Long id, TaskRequest taskRequest);
-    Mono<?> deleteTaskById(Long id);
+    Mono<Void> deleteTaskById(Long id);
 }
