@@ -2,6 +2,7 @@ package com.spring.webflux.controller;
 
 import com.spring.webflux.dto.TaskRequest;
 import com.spring.webflux.dto.TaskResponse;
+import com.spring.webflux.exception.TaskNotFoundException;
 import com.spring.webflux.model.Status;
 import com.spring.webflux.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,5 +97,17 @@ class TaskControllerTest {
                 .uri("/api/v1/tasks/{id}", 1L)
                 .exchange()
                 .expectStatus().isNoContent();
+    }
+
+    @Test
+    void test_delete_by_id_if_not_found_should_return_isNotFound() {
+        when(taskService.deleteTaskById(anyLong())).thenReturn(Mono.error(
+                new TaskNotFoundException("Task not found")
+        ));
+
+        webTestClient.delete()
+                .uri("/api/v1/tasks/{id}", 1L)
+                .exchange()
+                .expectStatus().isNotFound();
     }
 }
