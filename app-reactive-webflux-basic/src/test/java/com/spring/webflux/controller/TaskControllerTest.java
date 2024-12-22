@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -49,5 +50,17 @@ class TaskControllerTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(TaskRequest.class);
+    }
+
+    @Test
+    void test_find_all_task_should_returns_tasks_and_200() {
+        when(taskService.findAll()).thenReturn(Flux.just(taskResponse));
+
+        webTestClient.get()
+                .uri("/api/v1/tasks")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(TaskResponse.class)
+                .hasSize(1);
     }
 }
