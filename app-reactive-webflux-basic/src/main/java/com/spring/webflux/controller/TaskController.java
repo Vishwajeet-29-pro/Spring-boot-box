@@ -27,5 +27,9 @@ public class TaskController {
         return Mono.just(ResponseEntity.ok(taskService.findAll()));
     }
 
-
+    @GetMapping("/{id}")
+    public Mono<ResponseEntity<TaskResponse>> getTaskById(@PathVariable Long id) {
+        return taskService.findTaskById(id)
+                .map(ResponseEntity::ok);
+    }
 }
