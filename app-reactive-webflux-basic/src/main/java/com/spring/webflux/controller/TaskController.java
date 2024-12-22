@@ -32,4 +32,12 @@ public class TaskController {
         return taskService.findTaskById(id)
                 .map(ResponseEntity::ok);
     }
+
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<TaskResponse>> updateTaskById(
+            @PathVariable Long id, @RequestBody TaskRequest taskRequest
+            ) {
+        return taskService.updateTaskById(id, taskRequest)
+                .map(ResponseEntity::ok);
+    }
 }
