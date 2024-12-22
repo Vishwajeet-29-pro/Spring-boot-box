@@ -1,7 +1,7 @@
 # Variables
 GRADLE=./gradlew
 EXCLUDED_DIRS=(build src .gradle .git)  # Directories to exclude
-MODULES=$(shell find . -maxdepth 1 -type d -not -path "./*" $(foreach EXCLUDE, $(EXCLUDED_DIRS), -not -name $(EXCLUDE)) -exec basename {} \;)
+MODULES=$(shell ls -d * | grep app)
 
 # Commands
 .PHONY: all clean build test run help
