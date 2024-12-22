@@ -87,4 +87,14 @@ class TaskControllerTest {
                 .expectStatus().isOk()
                 .expectBody(TaskResponse.class);
     }
+
+    @Test
+    void test_delete_by_id_should_delete_task() {
+        when(taskService.deleteTaskById(anyLong())).thenReturn(Mono.empty());
+
+        webTestClient.delete()
+                .uri("/api/v1/tasks/{id}", 1L)
+                .exchange()
+                .expectStatus().isNoContent();
+    }
 }
