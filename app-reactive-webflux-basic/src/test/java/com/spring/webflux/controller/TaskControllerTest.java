@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(TaskController.class)
@@ -62,5 +63,15 @@ class TaskControllerTest {
                 .expectStatus().isOk()
                 .expectBodyList(TaskResponse.class)
                 .hasSize(1);
+    }
+
+    @Test
+    void test_find_by_id_should_returns_task_and_200() {
+        when(taskService.findTaskById(anyLong())).thenReturn(Mono.just(taskResponse));
+
+        webTestClient.get()
+                .uri("/api/v1/tasks/{id}", 1L)
+                .exchange()
+                .expectBody(TaskResponse.class);
     }
 }
