@@ -55,6 +55,10 @@ run-spring-security-1.0:
 	$(GRADLE) :app-spring-security-basic:bootRun
 	@echo "Running spring security basic module."
 
+run-reactive-webflux-basic:
+	$(GRADLE) :app-reactive-webflux-basic:bootRun
+	@echo "Running spring reactive webflux basic module"
+
 # Build and test a specific module
 run-module:
 	@read -p "Enter the module name (e.g., db-h2-connection): " MODULE && \
