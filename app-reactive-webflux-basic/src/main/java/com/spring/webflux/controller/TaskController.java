@@ -2,6 +2,7 @@ package com.spring.webflux.controller;
 
 import com.spring.webflux.dto.TaskRequest;
 import com.spring.webflux.dto.TaskResponse;
+import com.spring.webflux.exception.TaskNotFoundException;
 import com.spring.webflux.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,14 @@ public class TaskController {
             ) {
         return taskService.updateTaskById(id, taskRequest)
                 .map(ResponseEntity::ok);
+    }
+
+    @DeleteMapping("/{id}")
+    public Mono<ResponseEntity<Object>> deleteTaskById(@PathVariable Long id) {
+        return taskService.deleteTaskById(id)
+                .then(Mono.just(ResponseEntity.noContent().build()))
+                .onErrorResume(TaskNotFoundException.class, e ->
+                        Mono.just(ResponseEntity.notFound().build()));
+
     }
 }
