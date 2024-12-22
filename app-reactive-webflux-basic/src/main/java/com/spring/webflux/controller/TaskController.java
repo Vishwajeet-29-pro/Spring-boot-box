@@ -5,10 +5,8 @@ import com.spring.webflux.dto.TaskResponse;
 import com.spring.webflux.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -23,4 +21,11 @@ public class TaskController {
         return taskService.createTask(taskRequest)
                 .map(createdTask -> ResponseEntity.status(201).body(createdTask));
     }
+
+    @GetMapping
+    public Mono<ResponseEntity<Flux<TaskResponse>>> getAllTasks() {
+        return Mono.just(ResponseEntity.ok(taskService.findAll()));
+    }
+
+
 }
