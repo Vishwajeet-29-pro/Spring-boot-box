@@ -19,6 +19,7 @@ spring-boot-box/
 ├── app-db-mysql-connection/         # Module for MySQL integration
 ├── app-db-mongo-connection/         # Module for MongoDB integration
 ├── app-spring-security-basic        # Module for Spring security (RBAC)
+├── app-reactive-webflux-basic       # Module for Spring Reactive webflux basic
 ├── app-(future modules...)          # Additional modules for extended functionalities
 ```
 
@@ -86,6 +87,14 @@ choco install make
   - A simple application with handle the Role based Access Control.
   - Created RESTful APIs with Role based authorization.
   - Created test to handle Role based authorization.
+
+### **6. app-reactive-webflux-basic**
+
+- **Purpose**: Kick-start with Spring Reactive Webflux.
+- **Features**:
+    - A simple application with handle the Tasks (same as todo application).
+    - Created RESTful APIs with help of Reactive Components such as Mono, Flux.
+    - Created test to handle CRUD operations.
 
 ---
 
