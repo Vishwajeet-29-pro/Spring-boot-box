@@ -177,9 +177,9 @@ The project leverages **OpenAPI** to provide interactive API documentation. This
 3. Explore the API endpoints, input parameters, and responses in an interactive interface.
 
 **Note:** In Case of **Reactive WebFlux projects** navigate to below URL:
-    ```bash
-        http://localhost:8080/swagger-ui.html
-    ```
+```bash
+    http://localhost:8080/swagger-ui.html
+```
 ## Contributions
 
 Contributions are welcome! Feel free to fork the repository, create a new module, or enhance the existing ones.
