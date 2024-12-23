@@ -5,6 +5,8 @@ import com.spring.webflux.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class TaskRequest {
@@ -17,6 +19,8 @@ public class TaskRequest {
         task.setTitle(taskRequest.getTitle());
         task.setDescription(taskRequest.getDescription());
         task.setStatus(taskRequest.getStatus());
+        task.setCreatedAt(LocalDateTime.now());
+        task.setUpdatedAt(LocalDateTime.now());
         return task;
     }
 }
