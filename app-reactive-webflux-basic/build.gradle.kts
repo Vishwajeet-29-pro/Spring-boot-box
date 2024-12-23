@@ -28,7 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.7.0")
     implementation("org.springframework:spring-jdbc")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
