@@ -8,3 +8,13 @@ Feature: CRUD operations on TODO
     Then the response should contain the saved todo with an auto-generated ID
     And the status code should be 201
     And the saved todo should exists in the database
+
+  Scenario: Retrieve all todos
+    Given the following todo details:
+      | todo                    | completed |
+      | Learn BDD               | false     |
+      | Implement BDD in spring | false     |
+    When I send a GET request to "/todos"
+    Then the response should contain list of todo's
+    And the status code should be 200
+    And the size of list should be 2
