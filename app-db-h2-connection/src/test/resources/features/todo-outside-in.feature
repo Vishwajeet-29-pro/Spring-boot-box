@@ -15,6 +15,10 @@ Feature: CRUD operations on TODO
       | Learn BDD               | false     |
       | Implement BDD in spring | false     |
     When I send a GET request to "/todos"
-    Then the response should contain list of todo's
+    Then the response should contain the following todos:
+      | todo                    | completed |
+      | Learn BDD               | false     |
+      | Implement BDD in spring | false     |
+    And the response header "Content-Type" should be "application/json"
     And the status code should be 200
     And the size of list should be 2
