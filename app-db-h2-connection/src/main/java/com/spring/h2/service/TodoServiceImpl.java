@@ -7,6 +7,8 @@ import com.spring.h2.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
@@ -23,5 +25,11 @@ public class TodoServiceImpl implements TodoService {
     public TodoResponse getTodoById(Long id) {
         Todo retrievedTodo = todoRepository.findById(id).orElseThrow();
         return TodoResponse.toResponse(retrievedTodo);
+    }
+
+    @Override
+    public List<TodoResponse> retrieveAll() {
+        List<Todo> todos = todoRepository.findAll();
+        return todos.stream().map(TodoResponse::toResponse).toList();
     }
 }
