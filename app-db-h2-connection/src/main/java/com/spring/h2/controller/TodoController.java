@@ -6,10 +6,9 @@ import com.spring.h2.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
@@ -21,5 +20,10 @@ public class TodoController {
     @PostMapping
     public ResponseEntity<TodoResponse> saveTodo(@RequestBody TodoRequest todoRequest) {
         return new ResponseEntity<>(todoService.saveTodo(todoRequest), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TodoResponse>> retrieveAllTodos() {
+        return ResponseEntity.ok(todoService.retrieveAll());
     }
 }
