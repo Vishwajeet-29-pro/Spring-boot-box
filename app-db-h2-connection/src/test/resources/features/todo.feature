@@ -1,14 +1,25 @@
-Feature: Manage Todo List
-  As a user
-  I want to manage my todo list
-  So that I can keep track of my tasks
+Feature: CRUD operations on TODO
 
-  Scenario: Add a new task
-    Given I have an empty todo list
-    When I add a task "Complete Test case"
-    Then the task "Complete Test case" should be in the todo list
+  Scenario: Save a todo
+    Given the following todo details:
+      | todo                    | completed |
+      | Learn BDD               | false     |
+      | Implement BDD in spring | false     |
+    When I send a POST request to "/todos" with this todo
+    Then the response should contain the saved todo with an auto-generated ID
+    And the status code should be 201
+    And the saved todo should exists in the database
 
   Scenario: Retrieve all todos
-    Given I have a list of todos in the database
-    When I retrieve all todos
-    Then I should receive the complete list of todos
+    Given the following todo details:
+      | todo                    | completed |
+      | Learn BDD               | false     |
+      | Implement BDD in spring | false     |
+    When I send a GET request to "/todos"
+    Then the response should contain the following todos:
+      | todo                    | completed |
+      | Learn BDD               | false     |
+      | Implement BDD in spring | false     |
+    And the response header "Content-Type" should be "application/json"
+    And the status code should be 200
+    And the size of list should be 2
