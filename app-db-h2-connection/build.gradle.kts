@@ -38,7 +38,7 @@ dependencies {
 //    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.platform:junit-platform-launcher:1.11.0")
     testImplementation("org.junit.platform:junit-platform-commons:1.11.0")
-    testImplementation("org.junit.platform:junit-platform-engine:1.11.0")
+    testImplementation("org.junit.platform:junit-platform-engine:1.11.4")
     testImplementation("org.junit.platform:junit-platform-suite-api:1.11.0")
 }
 
