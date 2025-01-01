@@ -26,4 +26,9 @@ public class TodoController {
     public ResponseEntity<List<TodoResponse>> retrieveAllTodos() {
         return ResponseEntity.ok(todoService.retrieveAll());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoResponse> retrieveTodoById(@PathVariable Long id) {
+        return ResponseEntity.ok(todoService.getTodoById(id));
+    }
 }
