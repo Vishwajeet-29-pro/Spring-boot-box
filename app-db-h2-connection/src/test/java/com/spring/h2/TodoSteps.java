@@ -17,8 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TodoSteps {
 
@@ -30,7 +29,9 @@ public class TodoSteps {
 
     private List<TodoRequest> todoRequests = new ArrayList<>();
     private List<ResponseEntity<TodoResponse>> postResponses = new ArrayList<>();
+    private ResponseEntity<TodoResponse> singleGetResponse;
     private ResponseEntity<TodoResponse[]> getResponse;
+    private Long retrievedId;
 
     @Given("the following todo details:")
     public void theFollowingTodoDetails(List<Map<String, String>> todoDetails) {
@@ -102,6 +103,36 @@ public class TodoSteps {
     @And("the response header {string} should be {string}")
     public void theResponseHeaderShouldBe(String headerName, String expectedHeaderValue) {
         assertEquals(expectedHeaderValue, getResponse.getHeaders().getFirst(headerName), "Response header value should match");
+    }
+
+    @And("I retrieve the ID of the saved todo")
+    public void iRetrieveTheIDOfTheSavedTodo() {
+        assertFalse(postResponses.isEmpty(), "Post responses should not be empty");
+        TodoResponse savedTodo = postResponses.getFirst().getBody();
+        assertNotNull(savedTodo, "Saved todo should not be null");
+        assertNotNull(savedTodo.getId(), "Saved todo ID should not be null");
+        retrievedId = savedTodo.getId();
+    }
+
+    @When("I send a GET request to {string} with the retrieved ID")
+    public void iSendAGETRequestToWithTheRetrievedID(String endpoint) {
+        assertNotNull(retrievedId, "Retrieved ID should not be null");
+        String url = endpoint.replace("{id}", String.valueOf(retrievedId));
+        singleGetResponse = testRestTemplate.getForEntity(url, TodoResponse.class);
+    }
+
+
+    @Then("the response should contain the saved todo")
+    public void theResponseShouldContainTheSavedTodo() {
+        TodoResponse retrievedTodo = singleGetResponse.getBody();
+        assertNotNull(retrievedTodo, "Retrieved todo should not be null");
+
+        TodoResponse savedTodo = postResponses.getFirst().getBody();
+        assertNotNull(savedTodo, "Saved todo should not be null");
+
+        assertEquals(savedTodo.getId(), retrievedTodo.getId(), "Todo ID should match");
+        assertEquals(savedTodo.getTodo(), retrievedTodo.getTodo(), "Todo text should match");
+        assertEquals(savedTodo.isComplete(), retrievedTodo.isComplete(), "Completion status should match");
     }
 
     @And("the size of list should be {int}")
