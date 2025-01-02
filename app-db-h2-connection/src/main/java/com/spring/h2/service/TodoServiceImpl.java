@@ -32,4 +32,14 @@ public class TodoServiceImpl implements TodoService {
         List<Todo> todos = todoRepository.findAll();
         return todos.stream().map(TodoResponse::toResponse).toList();
     }
+
+    @Override
+    public TodoResponse updateTodoById(Long id, TodoRequest todoRequest) {
+        Todo updateTodo = todoRepository.findById(id).orElseThrow();
+        updateTodo.setTodo(todoRequest.getTodo());
+        updateTodo.setComplete(todoRequest.isComplete());
+
+        Todo todo = todoRepository.save(updateTodo);
+        return TodoResponse.toResponse(todo);
+    }
 }
