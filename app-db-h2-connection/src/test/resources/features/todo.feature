@@ -33,3 +33,17 @@ Feature: CRUD operations on TODO
     And I retrieve the ID of the saved todo
     When I send a GET request to "/todos/{id}" with the retrieved ID
     Then the response should contain the saved todo
+    And the status code should be 200
+
+  Scenario: Update a todo by ID
+    Given the following todo details:
+      | todo                    | completed |
+      | Learn Cucumber          | false     |
+    When I send a POST request to "/todos" with this todo
+    And I retrieve the ID of the saved todo
+    And I send a PUT request to "/todos/{id}" with the following updated details:
+      | todo          | completed |
+      | Learn Testing | true      |
+    Then the response should contain the updated todo
+    And the status code should be 200
+    And the updated todo should exist in the database
