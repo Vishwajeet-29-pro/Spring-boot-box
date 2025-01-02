@@ -10,12 +10,10 @@ import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +29,7 @@ public class TodoSteps {
     private List<ResponseEntity<TodoResponse>> postResponses = new ArrayList<>();
     private ResponseEntity<TodoResponse> singleGetResponse;
     private ResponseEntity<TodoResponse[]> getResponse;
+    private ResponseEntity<?> latestResponse;
     private Long retrievedId;
 
     @Given("the following todo details:")
@@ -49,6 +48,7 @@ public class TodoSteps {
             HttpEntity<TodoRequest> requestEntity = new HttpEntity<>(todoRequest);
             ResponseEntity<TodoResponse> response = testRestTemplate.postForEntity(endpoint, requestEntity, TodoResponse.class);
             postResponses.add(response);
+            latestResponse = response;
         }
     }
 
@@ -68,9 +68,8 @@ public class TodoSteps {
 
     @And("the status code should be {int}")
     public void theStatusCodeShouldBe(int statusCode) {
-        for (ResponseEntity<?> response : postResponses) {
-            assertEquals(statusCode, response.getStatusCode().value(), "Status code should match");
-        }
+        assertNotNull(latestResponse, "Latest response should not be null");
+        assertEquals(statusCode, latestResponse.getStatusCode().value(), "Status code should match");
     }
 
     @And("the saved todo should exists in the database")
@@ -86,6 +85,7 @@ public class TodoSteps {
     @When("I send a GET request to {string}")
     public void iSendAGETRequestTo(String endpoint) {
         getResponse = testRestTemplate.getForEntity(endpoint, TodoResponse[].class);
+        latestResponse = getResponse;
     }
 
     @Then("the response should contain the following todos:")
@@ -119,6 +119,7 @@ public class TodoSteps {
         assertNotNull(retrievedId, "Retrieved ID should not be null");
         String url = endpoint.replace("{id}", String.valueOf(retrievedId));
         singleGetResponse = testRestTemplate.getForEntity(url, TodoResponse.class);
+        latestResponse = singleGetResponse;
     }
 
 
@@ -139,5 +140,40 @@ public class TodoSteps {
     public void theSizeOfListShouldBe(int expectedSize) {
         assertNotNull(getResponse.getBody(), "Todos response should not be null");
         assertEquals(expectedSize, getResponse.getBody().length, "Size of todos list should match");
+    }
+
+    @And("I send a PUT request to {string} with the following updated details:")
+    public void iSendAPUTRequestToWithTheFollowingUpdatedDetails(String endpoint,  List<Map<String, String>> updatedDetails) {
+        assertNotNull(retrievedId, "Retrieved ID should not be null");
+        String url = endpoint.replace("{id}", String.valueOf(retrievedId));
+
+        Map<String, String> details = updatedDetails.getFirst();
+        TodoRequest updatedTodo = new TodoRequest(details.get("todo"), Boolean.parseBoolean(details.get("completed")));
+
+        HttpEntity<TodoRequest> requestEntity = new HttpEntity<>(updatedTodo);
+        singleGetResponse = testRestTemplate.exchange(url, HttpMethod.PUT, requestEntity, TodoResponse.class);
+        latestResponse = singleGetResponse;
+    }
+
+    @Then("the response should contain the updated todo")
+    public void theResponseShouldContainTheUpdatedTodo() {
+        TodoResponse updatedTodo = singleGetResponse.getBody();
+        assertNotNull(updatedTodo, "Updated todo should not be null");
+
+        Map<String, String> expectedDetails = new HashMap<>();
+        expectedDetails.put("todo", "Learn Testing");
+        expectedDetails.put("completed", "true");
+
+        assertEquals(expectedDetails.get("todo"), updatedTodo.getTodo(), "Todo text should match");
+        assertEquals(Boolean.parseBoolean(expectedDetails.get("completed")), updatedTodo.isComplete(), "Completion status should match");
+    }
+
+    @And("the updated todo should exist in the database")
+    public void theUpdatedTodoShouldExistInTheDatabase() {
+        TodoResponse updatedTodo = singleGetResponse.getBody();
+        assertNotNull(updatedTodo, "Updated todo should not be null");
+
+        TodoResponse retrievedTodo = todoService.getTodoById(retrievedId);
+        assertEquals(updatedTodo, retrievedTodo, "Updated todo should match the retrieved todo from the database");
     }
 }
