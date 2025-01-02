@@ -47,3 +47,13 @@ Feature: CRUD operations on TODO
     Then the response should contain the updated todo
     And the status code should be 200
     And the updated todo should exist in the database
+
+  Scenario: Delete a todo by ID
+    Given the following todo details:
+      | todo           | completed |
+      | Learn Spring   | false     |
+    When I send a POST request to "/api/todos" with this todo
+    And I retrieve the ID of the saved todo
+    When I send a DELETE request to "/todos/{id}" with the retrieved ID
+    Then the status code should be 200
+    And the deleted todo should not exist in the database
