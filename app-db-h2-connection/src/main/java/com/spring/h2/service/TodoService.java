@@ -9,4 +9,5 @@ public interface TodoService {
     TodoResponse saveTodo(TodoRequest todoRequest);
     TodoResponse getTodoById(Long id);
     List<TodoResponse> retrieveAll();
+    TodoResponse updateTodoById(Long id, TodoRequest todoRequest);
 }
