@@ -37,4 +37,10 @@ public class TodoController {
     public ResponseEntity<TodoResponse> updateTodoById(@PathVariable Long id, @RequestBody TodoRequest todoRequest) {
         return ResponseEntity.ok(todoService.updateTodoById(id, todoRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTodoById(@PathVariable Long id) throws NoSuchFieldException {
+        todoService.deleteTodoById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
