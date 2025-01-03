@@ -176,4 +176,17 @@ public class TodoSteps {
         TodoResponse retrievedTodo = todoService.getTodoById(retrievedId);
         assertEquals(updatedTodo, retrievedTodo, "Updated todo should match the retrieved todo from the database");
     }
+
+    @When("I send a DELETE request to {string} with the retrieved ID")
+    public void iSendADELETERequestToWithTheRetrievedID(String endpoint) {
+        assertNotNull(retrievedId, "Retrieved id should not be null");
+        String url = endpoint.replace("{id}", String.valueOf(retrievedId));
+        latestResponse = testRestTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+    }
+
+    @And("the deleted todo should not exist in the database")
+    public void theDeletedTodoShouldNotExistInTheDatabase() {
+        assertNotNull(retrievedId, "Retrieved id should not be null");
+        assertThrows(NoSuchElementException.class, () -> todoService.getTodoById(retrievedId), "Todo should not exists in database.");
+    }
 }
