@@ -52,8 +52,8 @@ Feature: CRUD operations on TODO
     Given the following todo details:
       | todo           | completed |
       | Learn Spring   | false     |
-    When I send a POST request to "/api/todos" with this todo
+    When I send a POST request to "/todos" with this todo
     And I retrieve the ID of the saved todo
     When I send a DELETE request to "/todos/{id}" with the retrieved ID
-    Then the status code should be 200
+    Then the status code should be 204
     And the deleted todo should not exist in the database
