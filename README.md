@@ -54,6 +54,7 @@ choco install make
     - Quick prototyping and testing with in-memory persistence.
     - RESTful APIs for CRUD operations.
     - End-to-end tests for each feature.
+    - In the same project **Introduced Behavior-Driven Development (BDD) using Cucumber.** (TODO service)
 
 ### **2. app-db-postgres-connection**
 
@@ -114,7 +115,6 @@ choco install make
 ### Testing Enhancements:
 
 - Add mutation testing with PIT (Pitest).
-- Introduce Behavior-Driven Development (BDD) using Cucumber.
 - Focus on integrating test automation pipelines.
 
 ---
