@@ -1,10 +1,8 @@
 package com.spring.h2.controller;
 
 import com.spring.h2.dto.ErrorResponse;
-import com.spring.h2.dto.ProductResponse;
 import com.spring.h2.dto.TodoRequest;
 import com.spring.h2.dto.TodoResponse;
-import com.spring.h2.model.Todo;
 import com.spring.h2.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/todos")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class TodoController {
 
     private final TodoService todoService;
