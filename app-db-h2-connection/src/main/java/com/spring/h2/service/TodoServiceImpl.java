@@ -42,4 +42,12 @@ public class TodoServiceImpl implements TodoService {
         Todo todo = todoRepository.save(updateTodo);
         return TodoResponse.toResponse(todo);
     }
+
+    @Override
+    public void deleteTodoById(Long id) throws NoSuchFieldException {
+        if (!todoRepository.existsById(id)) {
+            throw new NoSuchFieldException("Todo not present with id "+id);
+        }
+        todoRepository.deleteById(id);
+    }
 }

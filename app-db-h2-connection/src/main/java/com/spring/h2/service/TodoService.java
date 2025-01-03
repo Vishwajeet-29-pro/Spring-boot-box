@@ -10,4 +10,5 @@ public interface TodoService {
     TodoResponse getTodoById(Long id);
     List<TodoResponse> retrieveAll();
     TodoResponse updateTodoById(Long id, TodoRequest todoRequest);
+    void deleteTodoById(Long id) throws NoSuchFieldException;
 }
