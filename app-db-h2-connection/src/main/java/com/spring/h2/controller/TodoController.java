@@ -74,7 +74,7 @@ public class TodoController {
             @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodoById(@PathVariable Long id) throws NoSuchFieldException {
+    public ResponseEntity<Void> deleteTodoById(@PathVariable Long id) {
         todoService.deleteTodoById(id);
         return ResponseEntity.noContent().build();
     }

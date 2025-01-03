@@ -48,9 +48,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void deleteTodoById(Long id) throws NoSuchFieldException {
+    public void deleteTodoById(Long id) {
         if (!todoRepository.existsById(id)) {
-            throw new NoSuchFieldException("Todo not present with id "+id);
+            throw new TodoNotFoundException("Todo with id "+id+" not found");
         }
         todoRepository.deleteById(id);
     }
