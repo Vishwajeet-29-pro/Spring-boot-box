@@ -2,6 +2,7 @@ package com.spring.h2;
 
 import com.spring.h2.dto.TodoRequest;
 import com.spring.h2.dto.TodoResponse;
+import com.spring.h2.exception.TodoNotFoundException;
 import com.spring.h2.service.TodoService;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -187,6 +188,6 @@ public class TodoSteps {
     @And("the deleted todo should not exist in the database")
     public void theDeletedTodoShouldNotExistInTheDatabase() {
         assertNotNull(retrievedId, "Retrieved id should not be null");
-        assertThrows(NoSuchElementException.class, () -> todoService.getTodoById(retrievedId), "Todo should not exists in database.");
+        assertThrows(TodoNotFoundException.class, () -> todoService.getTodoById(retrievedId), "Todo should not exists in database.");
     }
 }
