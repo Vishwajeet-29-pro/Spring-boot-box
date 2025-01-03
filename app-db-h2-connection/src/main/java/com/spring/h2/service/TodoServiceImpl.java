@@ -2,6 +2,7 @@ package com.spring.h2.service;
 
 import com.spring.h2.dto.TodoRequest;
 import com.spring.h2.dto.TodoResponse;
+import com.spring.h2.exception.TodoNotFoundException;
 import com.spring.h2.model.Todo;
 import com.spring.h2.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,9 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoResponse getTodoById(Long id) {
-        Todo retrievedTodo = todoRepository.findById(id).orElseThrow();
+        Todo retrievedTodo = todoRepository.findById(id).orElseThrow(
+                () ->  new TodoNotFoundException("Todo with id "+id+" not found.")
+        );
         return TodoResponse.toResponse(retrievedTodo);
     }
 
@@ -35,7 +38,8 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoResponse updateTodoById(Long id, TodoRequest todoRequest) {
-        Todo updateTodo = todoRepository.findById(id).orElseThrow();
+        Todo updateTodo = todoRepository.findById(id).orElseThrow(() ->
+                new TodoNotFoundException("Todo with id "+id+" not found."));
         updateTodo.setTodo(todoRequest.getTodo());
         updateTodo.setComplete(todoRequest.isComplete());
 
