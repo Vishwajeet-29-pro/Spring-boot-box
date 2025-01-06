@@ -10,13 +10,12 @@ import lombok.Data;
 public class EmployeeRequest {
     private String employeeName;
     private String email;
-    private ParkingSpot parkingSpot;
+    private String parkingSpotId;
 
     public static Employee toEmployee(EmployeeRequest employeeRequest) {
         Employee employee = new Employee();
         employee.setEmployeeName(employeeRequest.getEmployeeName());
         employee.setEmail(employeeRequest.getEmail());
-        employee.setParkingSpot(employeeRequest.getParkingSpot());
         return employee;
     }
 }
