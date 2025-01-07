@@ -10,10 +10,12 @@ import lombok.Data;
 public class ParkingSpotRequest {
     private String spotNumber;
     private Long employeeId;
+    private boolean isAssigned;
 
     public static ParkingSpot toParkingSpot(ParkingSpotRequest request) {
         ParkingSpot parkingSpot = new ParkingSpot();
         parkingSpot.setSpotNumber(request.getSpotNumber());
+        parkingSpot.setAssigned(request.isAssigned());
         return parkingSpot;
     }
 }

@@ -16,6 +16,7 @@ public class ParkingSpot {
     private Long id;
     @Column(unique = true)
     private String spotNumber;
+    private boolean isAssigned;
     @OneToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
