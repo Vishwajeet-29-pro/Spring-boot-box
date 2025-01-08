@@ -2,6 +2,7 @@ package com.spring.relationship.one_to_one.service;
 
 import com.spring.relationship.one_to_one.dto.EmployeeRequest;
 import com.spring.relationship.one_to_one.dto.EmployeeResponse;
+import com.spring.relationship.one_to_one.entity.Employee;
 import com.spring.relationship.one_to_one.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
-        return null;
+        Employee employee = employeeRepository.save(EmployeeRequest.toEmployee(employeeRequest));
+        return EmployeeResponse.toEmployeeResponse(employee);
     }
 
     @Override
