@@ -4,6 +4,7 @@ import com.spring.relationship.one_to_one.dto.EmployeeRequest;
 import com.spring.relationship.one_to_one.dto.EmployeeResponse;
 import com.spring.relationship.one_to_one.entity.Employee;
 import com.spring.relationship.one_to_one.entity.ParkingSpot;
+import com.spring.relationship.one_to_one.exception.EmployeeNotFoundException;
 import com.spring.relationship.one_to_one.repository.EmployeeRepository;
 import com.spring.relationship.one_to_one.repository.ParkingSpotRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,5 +63,15 @@ class EmployeeServiceTest {
         assertNotNull(employeeResponse);
         assertEquals("Vishwajeet", employeeResponse.getEmployeeName());
         assertEquals("vishwajeet@springbox.com", employeeResponse.getEmail());
+    }
+
+    @Test
+    void test_find_employee_by_id_not_found_should_throw_EmployeeNotFoundException() {
+        when(employeeRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EmployeeNotFoundException.class,
+                () -> employeeService.findEmployeeById(22L));
+
+        assertEquals("Employee with id: 22L not found", exception.getMessage());
     }
 }
