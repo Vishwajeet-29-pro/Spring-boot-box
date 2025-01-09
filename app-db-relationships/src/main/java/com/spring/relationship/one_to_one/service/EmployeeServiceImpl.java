@@ -3,6 +3,7 @@ package com.spring.relationship.one_to_one.service;
 import com.spring.relationship.one_to_one.dto.EmployeeRequest;
 import com.spring.relationship.one_to_one.dto.EmployeeResponse;
 import com.spring.relationship.one_to_one.entity.Employee;
+import com.spring.relationship.one_to_one.exception.EmployeeNotFoundException;
 import com.spring.relationship.one_to_one.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse findEmployeeById(Long id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow();
+        Employee employee = employeeRepository.findById(id).orElseThrow(
+                () -> new EmployeeNotFoundException("Employee with id: "+id+" not found")
+        );
         return EmployeeResponse.toEmployeeResponse(employee);
     }
 
