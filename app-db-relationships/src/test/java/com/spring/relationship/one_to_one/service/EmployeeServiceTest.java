@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,9 +47,20 @@ class EmployeeServiceTest {
 
         EmployeeResponse employeeResponse = employeeService.createEmployee(employeeRequest);
 
-        assertNotNull(employeeRequest);
+        assertNotNull(employeeResponse);
         assertThat(employeeResponse.getEmployeeName()).isEqualTo(employee.getEmployeeName());
         assertThat(employeeResponse.getEmail()).isEqualTo(employee.getEmail());
         verify(employeeRepository, times(1)).save(any(Employee.class));
+    }
+
+    @Test
+    void test_find_employee_by_id_should_return_employee() {
+        when(employeeRepository.findById(anyLong())).thenReturn(Optional.of(employee));
+
+        EmployeeResponse employeeResponse = employeeService.findEmployeeById(1L);
+
+        assertNotNull(employeeResponse);
+        assertEquals("Vishwajeet", employeeResponse.getEmployeeName());
+        assertEquals("vishwajeet@springbox.com", employeeResponse.getEmail());
     }
 }
