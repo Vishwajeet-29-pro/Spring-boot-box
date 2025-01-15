@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,5 +74,18 @@ class EmployeeServiceTest {
                 () -> employeeService.findEmployeeById(22L));
 
         assertEquals("Employee with id: 22 not found", exception.getMessage());
+    }
+
+    @Test
+    void test_find_all_employees_should_return_list_of_employee_responses() {
+        when(employeeRepository.findAll()).thenReturn(List.of(employee));
+
+        List<EmployeeResponse> employeeResponses = employeeService.findAllEmployees();
+
+        assertEquals(1, employeeResponses.size());
+        assertNotNull(employeeResponses);
+        assertEquals("Vishwajeet", employeeResponses.getFirst().getEmployeeName());
+        assertEquals("vishwajeet@springbox.com", employeeResponses.getFirst().getEmail());
+        assertNull(employeeResponses.getFirst().getSpotNumber());
     }
 }
