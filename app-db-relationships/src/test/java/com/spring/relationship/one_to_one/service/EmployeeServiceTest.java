@@ -116,4 +116,13 @@ class EmployeeServiceTest {
 
         assertEquals("Employee with id 22 not found", exception.getMessage());
     }
+
+    @Test
+    void test_delete_employee_by_id_should_delete_remove_employee() {
+        Long id = 1L;
+        when(employeeRepository.existsById(id)).thenReturn(true);
+
+        employeeService.deleteEmployee(id);
+        verify(employeeRepository, times(1)).deleteById(id);
+    }
 }
