@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse findEmployeeById(Long id) {
         Employee employee = employeeRepository.findById(id).orElseThrow(
-                () -> new EmployeeNotFoundException("Employee with id: "+id+" not found")
+                () -> new EmployeeNotFoundException("Employee with id: " + id + " not found")
         );
         return EmployeeResponse.toEmployeeResponse(employee);
     }
@@ -42,7 +42,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse updateEmployeeById(Long id, EmployeeRequest employeeRequest) {
-        Employee employee = employeeRepository.findById(id).orElseThrow();
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with id " + id + " not found"));
         employee.setEmployeeName(employeeRequest.getEmployeeName());
         employee.setEmail(employeeRequest.getEmail());
         return EmployeeResponse.toEmployeeResponse(employeeRepository.save(employee));
