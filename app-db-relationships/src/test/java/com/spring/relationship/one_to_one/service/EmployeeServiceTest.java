@@ -88,4 +88,20 @@ class EmployeeServiceTest {
         assertEquals("vishwajeet@springbox.com", employeeResponses.getFirst().getEmail());
         assertNull(employeeResponses.getFirst().getSpotNumber());
     }
+
+    @Test
+    void test_update_employee_by_should_update_employee_and_return_updated_employee_response() {
+        Long id = 1L;
+        EmployeeRequest employeeRequest = new EmployeeRequest("Vishwajeet Kotkar", "vishwajeetak@springbox.com", null);
+
+        when(employeeRepository.findById(id)).thenReturn(Optional.of(employee));
+        employee.setEmployeeName(employeeRequest.getEmployeeName());
+        employee.setEmail(employeeRequest.getEmail());
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
+
+        EmployeeResponse employeeResponse = employeeService.updateEmployeeById(id, employeeRequest);
+        assertEquals(employeeRequest.getEmployeeName(), employeeResponse.getEmployeeName());
+        assertEquals(employeeRequest.getEmail(), employeeResponse.getEmail());
+        assertNull(employeeResponse.getSpotNumber());
+    }
 }
