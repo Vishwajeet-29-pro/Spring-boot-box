@@ -104,4 +104,16 @@ class EmployeeServiceTest {
         assertEquals(employeeRequest.getEmail(), employeeResponse.getEmail());
         assertNull(employeeResponse.getSpotNumber());
     }
+
+    @Test
+    void test_update_employee_id_not_found_should_throw_EmployeeNotFoundException() {
+        Long id = 22L;
+        when(employeeRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EmployeeNotFoundException.class,
+                () -> employeeService.updateEmployeeById(id, any(EmployeeRequest.class))
+        );
+
+        assertEquals("Employee with id 22 not found", exception.getMessage());
+    }
 }
