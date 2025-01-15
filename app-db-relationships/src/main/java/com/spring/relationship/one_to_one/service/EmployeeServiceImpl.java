@@ -33,7 +33,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeResponse> findAllEmployees() {
-        return List.of();
+        List<Employee> employees = employeeRepository.findAll();
+        return employees.stream()
+                .map(EmployeeResponse::toEmployeeResponse)
+                .toList();
     }
 
     @Override
