@@ -3,6 +3,7 @@ package com.spring.relationship.one_to_one.service;
 import com.spring.relationship.one_to_one.dto.EmployeeRequest;
 import com.spring.relationship.one_to_one.dto.EmployeeResponse;
 import com.spring.relationship.one_to_one.entity.Employee;
+import com.spring.relationship.one_to_one.entity.ParkingSpot;
 import com.spring.relationship.one_to_one.exception.EmployeeNotFoundException;
 import com.spring.relationship.one_to_one.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse updateEmployeeById(Long id, EmployeeRequest employeeRequest) {
-        return null;
+        Employee employee = employeeRepository.findById(id).orElseThrow();
+        employee.setEmployeeName(employeeRequest.getEmployeeName());
+        employee.setEmail(employeeRequest.getEmail());
+        return EmployeeResponse.toEmployeeResponse(employeeRepository.save(employee));
     }
 
     @Override
