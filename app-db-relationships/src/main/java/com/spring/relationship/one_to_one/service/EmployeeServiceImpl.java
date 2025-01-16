@@ -5,7 +5,9 @@ import com.spring.relationship.one_to_one.dto.EmployeeResponse;
 import com.spring.relationship.one_to_one.entity.Employee;
 import com.spring.relationship.one_to_one.entity.ParkingSpot;
 import com.spring.relationship.one_to_one.exception.EmployeeNotFoundException;
+import com.spring.relationship.one_to_one.exception.NoSuchParkingSpotExists;
 import com.spring.relationship.one_to_one.repository.EmployeeRepository;
+import com.spring.relationship.one_to_one.repository.ParkingSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final ParkingSpotRepository parkingSpotRepository;
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
@@ -59,7 +62,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse assignParkingLot(Long employeeId, String spotNumber) {
-        return null;
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                () -> new EmployeeNotFoundException("Employee with id: " + employeeId + " not found")
+        );
+        ParkingSpot parkingSpot = parkingSpotRepository.findBySpotNumber(spotNumber).orElseThrow(
+                () -> new NoSuchParkingSpotExists("Parking spot with Spot number: "+spotNumber+" not found")
+        );
+        parkingSpot.setEmployee(employee);
+        parkingSpot.setAssigned(true);
+        parkingSpotRepository.save(parkingSpot);
+
+        employee.setParkingSpot(parkingSpot);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return EmployeeResponse.toEmployeeResponse(updatedEmployee);
     }
 
     @Override
