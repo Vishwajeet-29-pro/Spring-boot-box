@@ -136,4 +136,20 @@ class EmployeeServiceTest {
         );
         assertEquals("Employee with id: 222 not found", exception.getMessage());
     }
+
+    @Test
+    void test_assign_parking_spot_to_employee_should_employee_response() {
+        parkingSpot.setEmployee(employee);
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(parkingSpotRepository.findBySpotNumber("A1")).thenReturn(Optional.of(parkingSpot));
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
+
+        EmployeeResponse employeeResponse = employeeService.assignParkingLot(1L, "A1");
+
+        assertNotNull(employeeResponse);
+        assertEquals(employee.getId(), employeeResponse.getId());
+        assertEquals(parkingSpot.getSpotNumber(), employeeResponse.getSpotNumber());
+        verify(parkingSpotRepository, times(1)).findBySpotNumber("A1");
+        verify(employeeRepository, times(1)).save(any(Employee.class));
+    }
 }
