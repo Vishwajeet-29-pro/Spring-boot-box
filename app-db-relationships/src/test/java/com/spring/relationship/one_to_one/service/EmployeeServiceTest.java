@@ -10,7 +10,6 @@ import com.spring.relationship.one_to_one.repository.ParkingSpotRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -37,7 +36,7 @@ class EmployeeServiceTest {
 
     @BeforeEach
     public void setup() {
-        employeeService = new EmployeeServiceImpl(employeeRepository);
+        employeeService = new EmployeeServiceImpl(employeeRepository, parkingSpotRepository);
         parkingSpot = new ParkingSpot(1L, "A1", false, null);
         employee = new Employee(1L, "Vishwajeet", "vishwajeet@springbox.com", null);
     }
@@ -140,6 +139,7 @@ class EmployeeServiceTest {
     @Test
     void test_assign_parking_spot_to_employee_should_employee_response() {
         parkingSpot.setEmployee(employee);
+        parkingSpot.setAssigned(true);
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
         when(parkingSpotRepository.findBySpotNumber("A1")).thenReturn(Optional.of(parkingSpot));
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
