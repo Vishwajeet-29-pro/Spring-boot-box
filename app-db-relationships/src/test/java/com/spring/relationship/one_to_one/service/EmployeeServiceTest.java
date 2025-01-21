@@ -169,7 +169,6 @@ class EmployeeServiceTest {
         parkingSpot.setAssigned(true);
         employee.setParkingSpot(parkingSpot);
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
-        when(parkingSpotRepository.findBySpotNumber("A1")).thenReturn(Optional.of(parkingSpot));
 
         Optional<EmployeeResponse> employeeResponse = employeeService.findEmployeeWithParkingSpot(1L);
         assertNotNull(employeeResponse);
