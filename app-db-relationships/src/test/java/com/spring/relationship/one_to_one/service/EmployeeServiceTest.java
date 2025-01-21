@@ -152,4 +152,14 @@ class EmployeeServiceTest {
         verify(parkingSpotRepository, times(1)).findBySpotNumber("A1");
         verify(employeeRepository, times(1)).save(any(Employee.class));
     }
+
+    @Test
+    void test_remove_parking_spot_assign_to_employee() {
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
+
+        EmployeeResponse employeeResponse = employeeService.removeParkingLot(1L);
+        assertNotNull(employeeResponse);
+        assertNull(employeeResponse.getSpotNumber());
+    }
 }
