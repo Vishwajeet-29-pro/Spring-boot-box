@@ -79,7 +79,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse removeParkingLot(Long employeeId) {
-        return null;
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                () -> new EmployeeNotFoundException("Employee with id: "+employeeId+" not found")
+        );
+        employee.setParkingSpot(null);
+        Employee removedParkingSpot = employeeRepository.save(employee);
+        return EmployeeResponse.toEmployeeResponse(removedParkingSpot);
     }
 
     @Override
