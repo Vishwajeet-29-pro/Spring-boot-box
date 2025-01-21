@@ -152,4 +152,28 @@ class EmployeeServiceTest {
         verify(parkingSpotRepository, times(1)).findBySpotNumber("A1");
         verify(employeeRepository, times(1)).save(any(Employee.class));
     }
+
+    @Test
+    void test_remove_parking_spot_assign_to_employee() {
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
+
+        EmployeeResponse employeeResponse = employeeService.removeParkingLot(1L);
+        assertNotNull(employeeResponse);
+        assertNull(employeeResponse.getSpotNumber());
+    }
+
+    @Test
+    void test_find_employee_with_parking_spot() {
+        parkingSpot.setEmployee(employee);
+        parkingSpot.setAssigned(true);
+        employee.setParkingSpot(parkingSpot);
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(parkingSpotRepository.findBySpotNumber("A1")).thenReturn(Optional.of(parkingSpot));
+
+        Optional<EmployeeResponse> employeeResponse = employeeService.findEmployeeWithParkingSpot(1L);
+        assertNotNull(employeeResponse);
+        assertEquals(employee.getEmployeeName(), employeeResponse.get().getEmployeeName());
+        assertEquals(employee.getParkingSpot().getSpotNumber(), employeeResponse.get().getSpotNumber());
+    }
 }
