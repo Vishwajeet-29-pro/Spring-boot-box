@@ -162,4 +162,18 @@ class EmployeeServiceTest {
         assertNotNull(employeeResponse);
         assertNull(employeeResponse.getSpotNumber());
     }
+
+    @Test
+    void test_find_employee_with_parking_spot() {
+        parkingSpot.setEmployee(employee);
+        parkingSpot.setAssigned(true);
+        employee.setParkingSpot(parkingSpot);
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(parkingSpotRepository.findBySpotNumber("A1")).thenReturn(Optional.of(parkingSpot));
+
+        Optional<EmployeeResponse> employeeResponse = employeeService.findEmployeeWithParkingSpot(1L);
+        assertNotNull(employeeResponse);
+        assertEquals(employee.getEmployeeName(), employeeResponse.get().getEmployeeName());
+        assertEquals(employee.getParkingSpot().getSpotNumber(), employeeResponse.get().getSpotNumber());
+    }
 }
