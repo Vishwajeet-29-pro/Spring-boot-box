@@ -89,6 +89,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Optional<EmployeeResponse> findEmployeeWithParkingSpot(Long employeeId) {
-        return Optional.empty();
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                () -> new EmployeeNotFoundException("Employee with id: "+employeeId+" not found")
+        );
+        return Optional.of(EmployeeResponse.toEmployeeResponse(employee));
     }
 }
