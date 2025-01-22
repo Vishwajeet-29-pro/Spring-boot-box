@@ -50,7 +50,9 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpotResponse updateParkingSpotById(Long id, ParkingSpotRequest parkingSpotRequest) {
-        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow();
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow(
+                () -> new NoSuchParkingSpotExists("Parking spot with id "+id+" not found")
+        );
         parkingSpot.setSpotNumber(parkingSpotRequest.getSpotNumber());
         parkingSpot.setAssigned(parkingSpotRequest.isAssigned());
 
