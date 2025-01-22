@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ParkingSpotServiceTest {
@@ -133,5 +133,13 @@ class ParkingSpotServiceTest {
                 () -> parkingSpotService.updateParkingSpotById(11L, null)
         );
         assertEquals("Parking spot with id 11 not found", exception.getMessage());
+    }
+
+    @Test
+    void should_delete_parking_spot_when_delete_by_id() {
+        when(parkingSpotRepository.existsById(anyLong())).thenReturn(true);
+
+        parkingSpotService.deleteParkingSpot(1L);
+        verify(parkingSpotRepository, times(1)).deleteById(1L);
     }
 }
