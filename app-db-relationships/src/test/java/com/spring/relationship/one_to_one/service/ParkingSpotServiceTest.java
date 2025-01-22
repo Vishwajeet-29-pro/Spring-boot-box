@@ -4,6 +4,7 @@ import com.spring.relationship.one_to_one.dto.ParkingSpotRequest;
 import com.spring.relationship.one_to_one.dto.ParkingSpotResponse;
 import com.spring.relationship.one_to_one.entity.Employee;
 import com.spring.relationship.one_to_one.entity.ParkingSpot;
+import com.spring.relationship.one_to_one.exception.NoSuchParkingSpotExists;
 import com.spring.relationship.one_to_one.repository.EmployeeRepository;
 import com.spring.relationship.one_to_one.repository.ParkingSpotRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,5 +63,15 @@ class ParkingSpotServiceTest {
         assertEquals(parkingSpot.getSpotNumber(), parkingSpotResponse.getSpotNumber());
         assertFalse(parkingSpotResponse.isAssigned());
         assertNull(parkingSpotResponse.getEmployeeId());
+    }
+
+    @Test
+    void should_throw_NoSuchParkingSpotException_when_parking_spot_not_found_by_id() {
+        when(parkingSpotRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(NoSuchParkingSpotExists.class,
+                () -> parkingSpotService.findParkingSpotById(11L));
+
+        assertEquals("Parking spot with id 11 not found", exception.getMessage());
     }
 }
