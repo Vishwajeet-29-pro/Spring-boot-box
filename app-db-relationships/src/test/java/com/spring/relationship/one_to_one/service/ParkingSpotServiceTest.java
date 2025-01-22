@@ -85,4 +85,14 @@ class ParkingSpotServiceTest {
         assertFalse(parkingSpotResponse.isAssigned());
         assertNull(parkingSpotResponse.getEmployeeId());
     }
+
+    @Test
+    void should_throw_NoSuchParkingSpotExist_exception_when_not_found_by_spot_number() {
+        when(parkingSpotRepository.findBySpotNumber(anyString())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(NoSuchParkingSpotExists.class,
+                () -> parkingSpotService.findParkingSpotBySpotNumber("B1"));
+
+        assertEquals("Parking spot with spot number B1 not found", exception.getMessage());
+    }
 }
