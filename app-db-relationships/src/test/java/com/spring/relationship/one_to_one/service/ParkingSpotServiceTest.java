@@ -109,4 +109,19 @@ class ParkingSpotServiceTest {
         assertFalse(parkingSpotResponses.getFirst().isAssigned());
         assertNull(parkingSpotResponses.getFirst().getEmployeeId());
     }
+
+    @Test
+    void should_update_parking_spot_when_update_by_id() {
+        ParkingSpotRequest parkingSpotRequest = new ParkingSpotRequest("AA1", true, null);
+        when(parkingSpotRepository.findById(anyLong())).thenReturn(Optional.of(parkingSpot));
+        parkingSpot.setSpotNumber(parkingSpotRequest.getSpotNumber());
+        parkingSpot.setAssigned(parkingSpotRequest.isAssigned());
+        when(parkingSpotRepository.save(any(ParkingSpot.class))).thenReturn(parkingSpot);
+
+        ParkingSpotResponse parkingSpotResponse = parkingSpotService.updateParkingSpotById(1L, parkingSpotRequest);
+
+        assertNotNull(parkingSpotResponse);
+        assertEquals(parkingSpotRequest.getSpotNumber(), parkingSpotResponse.getSpotNumber());
+        assertTrue(parkingSpotResponse.isAssigned());
+    }
 }
