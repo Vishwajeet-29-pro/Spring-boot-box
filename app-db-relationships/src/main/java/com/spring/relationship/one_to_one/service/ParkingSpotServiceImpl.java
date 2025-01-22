@@ -62,7 +62,10 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public void deleteParkingSpot(Long id) {
-
+        if (!parkingSpotRepository.existsById(id)) {
+            throw new NoSuchParkingSpotExists("Parking spot with id "+id+" not found");
+        }
+        parkingSpotRepository.deleteById(id);
     }
 
     @Override
