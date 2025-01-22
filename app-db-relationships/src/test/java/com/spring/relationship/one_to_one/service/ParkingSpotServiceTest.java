@@ -16,8 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,5 +72,17 @@ class ParkingSpotServiceTest {
                 () -> parkingSpotService.findParkingSpotById(11L));
 
         assertEquals("Parking spot with id 11 not found", exception.getMessage());
+    }
+
+    @Test
+    void should_return_parking_spot_response_when_find_by_parking_spot() {
+        when(parkingSpotRepository.findBySpotNumber(anyString())).thenReturn(Optional.of(parkingSpot));
+
+        ParkingSpotResponse parkingSpotResponse = parkingSpotService.findParkingSpotBySpotNumber("A1");
+
+        assertNotNull(parkingSpotResponse);
+        assertEquals(parkingSpot.getSpotNumber(), parkingSpotResponse.getSpotNumber());
+        assertFalse(parkingSpotResponse.isAssigned());
+        assertNull(parkingSpotResponse.getEmployeeId());
     }
 }
