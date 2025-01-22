@@ -50,7 +50,12 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpotResponse updateParkingSpotById(Long id, ParkingSpotRequest parkingSpotRequest) {
-        return null;
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow();
+        parkingSpot.setSpotNumber(parkingSpotRequest.getSpotNumber());
+        parkingSpot.setAssigned(parkingSpotRequest.isAssigned());
+
+        ParkingSpot updatedParkingSpot = parkingSpotRepository.save(parkingSpot);
+        return ParkingSpotResponse.toParkingSpotResponse(updatedParkingSpot);
     }
 
     @Override
