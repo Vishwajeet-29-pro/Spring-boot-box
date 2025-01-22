@@ -9,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class ParkingSpotRequest {
     private String spotNumber;
-    private Long employeeId;
     private boolean isAssigned;
+    private Long employeeId;
 
     public static ParkingSpot toParkingSpot(ParkingSpotRequest request) {
         ParkingSpot parkingSpot = new ParkingSpot();
