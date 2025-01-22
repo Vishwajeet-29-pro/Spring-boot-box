@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,5 +95,18 @@ class ParkingSpotServiceTest {
                 () -> parkingSpotService.findParkingSpotBySpotNumber("B1"));
 
         assertEquals("Parking spot with spot number B1 not found", exception.getMessage());
+    }
+
+    @Test
+    void should_return_list_of_parking_spot_when_find_all_parking_spots() {
+        when(parkingSpotRepository.findAll()).thenReturn(List.of(parkingSpot));
+
+        List<ParkingSpotResponse> parkingSpotResponses = parkingSpotService.findAllParkingSpot();
+
+        assertNotNull(parkingSpotResponses);
+        assertEquals(1, parkingSpotResponses.size());
+        assertEquals(parkingSpot.getSpotNumber(), parkingSpotResponses.getFirst().getSpotNumber());
+        assertFalse(parkingSpotResponses.getFirst().isAssigned());
+        assertNull(parkingSpotResponses.getFirst().getEmployeeId());
     }
 }
