@@ -12,8 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,6 +48,18 @@ class ParkingSpotServiceTest {
 
         assertNotNull(parkingSpotResponse);
         assertEquals(parkingSpotRequest.getSpotNumber(), parkingSpotResponse.getSpotNumber());
+        assertFalse(parkingSpotResponse.isAssigned());
+        assertNull(parkingSpotResponse.getEmployeeId());
+    }
+
+    @Test
+    void should_return_parking_spot_response_when_fetch_parking_spot_by_id() {
+        when(parkingSpotRepository.findById(anyLong())).thenReturn(Optional.of(parkingSpot));
+
+        ParkingSpotResponse parkingSpotResponse = parkingSpotService.findParkingSpotById(1L);
+
+        assertNotNull(parkingSpotResponse);
+        assertEquals(parkingSpot.getSpotNumber(), parkingSpotResponse.getSpotNumber());
         assertFalse(parkingSpotResponse.isAssigned());
         assertNull(parkingSpotResponse.getEmployeeId());
     }
