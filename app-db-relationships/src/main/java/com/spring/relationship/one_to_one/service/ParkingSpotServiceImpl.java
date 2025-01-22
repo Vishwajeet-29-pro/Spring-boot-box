@@ -4,6 +4,7 @@ import com.spring.relationship.one_to_one.dto.EmployeeResponse;
 import com.spring.relationship.one_to_one.dto.ParkingSpotRequest;
 import com.spring.relationship.one_to_one.dto.ParkingSpotResponse;
 import com.spring.relationship.one_to_one.entity.ParkingSpot;
+import com.spring.relationship.one_to_one.exception.NoSuchParkingSpotExists;
 import com.spring.relationship.one_to_one.repository.ParkingSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,9 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpotResponse findParkingSpotById(Long id) {
-        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow();
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow(
+                () -> new NoSuchParkingSpotExists("Parking spot with id "+id+" not found")
+        );
         return ParkingSpotResponse.toParkingSpotResponse(parkingSpot);
     }
 
