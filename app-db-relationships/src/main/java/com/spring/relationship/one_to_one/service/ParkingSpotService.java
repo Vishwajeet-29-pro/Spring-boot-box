@@ -11,7 +11,7 @@ public interface ParkingSpotService {
     ParkingSpotResponse createParkingSpot(ParkingSpotRequest parkingSpotRequest);
     ParkingSpotResponse findParkingSpotById(Long id);
     ParkingSpotResponse findParkingSpotBySpotNumber(String spotNumber);
-    List<ParkingSpotRequest> findAllParkingSpot();
+    List<ParkingSpotResponse> findAllParkingSpot();
     ParkingSpotResponse updateParkingSpotById(Long id, ParkingSpotRequest parkingSpotRequest);
     void deleteParkingSpot(Long id);
     Optional<EmployeeResponse> findEmployeeByParkingSpot(Long parkingSpotId);

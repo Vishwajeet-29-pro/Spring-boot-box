@@ -41,7 +41,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public List<ParkingSpotRequest> findAllParkingSpot() {
+    public List<ParkingSpotResponse> findAllParkingSpot() {
         return List.of();
     }
 
