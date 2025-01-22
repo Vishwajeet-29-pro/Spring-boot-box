@@ -3,6 +3,7 @@ package com.spring.relationship.one_to_one.service;
 import com.spring.relationship.one_to_one.dto.EmployeeResponse;
 import com.spring.relationship.one_to_one.dto.ParkingSpotRequest;
 import com.spring.relationship.one_to_one.dto.ParkingSpotResponse;
+import com.spring.relationship.one_to_one.entity.ParkingSpot;
 import com.spring.relationship.one_to_one.repository.ParkingSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpotResponse createParkingSpot(ParkingSpotRequest parkingSpotRequest) {
-        return null;
+        ParkingSpot parkingSpot = parkingSpotRepository.save(ParkingSpotRequest.toParkingSpot(parkingSpotRequest));
+        return ParkingSpotResponse.toParkingSpotResponse(parkingSpot);
     }
 
     @Override
