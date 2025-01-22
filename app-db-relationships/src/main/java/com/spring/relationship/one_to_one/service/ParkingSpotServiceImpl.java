@@ -25,7 +25,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpotResponse findParkingSpotById(Long id) {
-        return null;
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow();
+        return ParkingSpotResponse.toParkingSpotResponse(parkingSpot);
     }
 
     @Override
