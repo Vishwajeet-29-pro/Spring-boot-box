@@ -34,7 +34,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpotResponse findParkingSpotBySpotNumber(String spotNumber) {
-        return null;
+        ParkingSpot parkingSpot = parkingSpotRepository.findBySpotNumber(spotNumber).orElseThrow();
+        return ParkingSpotResponse.toParkingSpotResponse(parkingSpot);
     }
 
     @Override
