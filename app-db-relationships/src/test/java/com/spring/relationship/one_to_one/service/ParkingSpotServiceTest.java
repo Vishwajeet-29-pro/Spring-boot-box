@@ -13,11 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ParkingSpotServiceTest {
@@ -94,5 +95,51 @@ class ParkingSpotServiceTest {
                 () -> parkingSpotService.findParkingSpotBySpotNumber("B1"));
 
         assertEquals("Parking spot with spot number B1 not found", exception.getMessage());
+    }
+
+    @Test
+    void should_return_list_of_parking_spot_when_find_all_parking_spots() {
+        when(parkingSpotRepository.findAll()).thenReturn(List.of(parkingSpot));
+
+        List<ParkingSpotResponse> parkingSpotResponses = parkingSpotService.findAllParkingSpot();
+
+        assertNotNull(parkingSpotResponses);
+        assertEquals(1, parkingSpotResponses.size());
+        assertEquals(parkingSpot.getSpotNumber(), parkingSpotResponses.getFirst().getSpotNumber());
+        assertFalse(parkingSpotResponses.getFirst().isAssigned());
+        assertNull(parkingSpotResponses.getFirst().getEmployeeId());
+    }
+
+    @Test
+    void should_update_parking_spot_when_update_by_id() {
+        ParkingSpotRequest parkingSpotRequest = new ParkingSpotRequest("AA1", true, null);
+        when(parkingSpotRepository.findById(anyLong())).thenReturn(Optional.of(parkingSpot));
+        parkingSpot.setSpotNumber(parkingSpotRequest.getSpotNumber());
+        parkingSpot.setAssigned(parkingSpotRequest.isAssigned());
+        when(parkingSpotRepository.save(any(ParkingSpot.class))).thenReturn(parkingSpot);
+
+        ParkingSpotResponse parkingSpotResponse = parkingSpotService.updateParkingSpotById(1L, parkingSpotRequest);
+
+        assertNotNull(parkingSpotResponse);
+        assertEquals(parkingSpotRequest.getSpotNumber(), parkingSpotResponse.getSpotNumber());
+        assertTrue(parkingSpotResponse.isAssigned());
+    }
+
+    @Test
+    void should_throw_NoSuchParkingSpotExists_when_update_by_id_not_found() {
+        when(parkingSpotRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(NoSuchParkingSpotExists.class,
+                () -> parkingSpotService.updateParkingSpotById(11L, null)
+        );
+        assertEquals("Parking spot with id 11 not found", exception.getMessage());
+    }
+
+    @Test
+    void should_delete_parking_spot_when_delete_by_id() {
+        when(parkingSpotRepository.existsById(anyLong())).thenReturn(true);
+
+        parkingSpotService.deleteParkingSpot(1L);
+        verify(parkingSpotRepository, times(1)).deleteById(1L);
     }
 }

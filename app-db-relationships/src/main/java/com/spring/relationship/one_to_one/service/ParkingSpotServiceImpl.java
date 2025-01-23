@@ -41,18 +41,31 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public List<ParkingSpotRequest> findAllParkingSpot() {
-        return List.of();
+    public List<ParkingSpotResponse> findAllParkingSpot() {
+        List<ParkingSpot> parkingSpotResponses = parkingSpotRepository.findAll();
+        return parkingSpotResponses.stream().map(
+                ParkingSpotResponse::toParkingSpotResponse
+        ).toList();
     }
 
     @Override
     public ParkingSpotResponse updateParkingSpotById(Long id, ParkingSpotRequest parkingSpotRequest) {
-        return null;
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow(
+                () -> new NoSuchParkingSpotExists("Parking spot with id "+id+" not found")
+        );
+        parkingSpot.setSpotNumber(parkingSpotRequest.getSpotNumber());
+        parkingSpot.setAssigned(parkingSpotRequest.isAssigned());
+
+        ParkingSpot updatedParkingSpot = parkingSpotRepository.save(parkingSpot);
+        return ParkingSpotResponse.toParkingSpotResponse(updatedParkingSpot);
     }
 
     @Override
     public void deleteParkingSpot(Long id) {
-
+        if (!parkingSpotRepository.existsById(id)) {
+            throw new NoSuchParkingSpotExists("Parking spot with id "+id+" not found");
+        }
+        parkingSpotRepository.deleteById(id);
     }
 
     @Override
