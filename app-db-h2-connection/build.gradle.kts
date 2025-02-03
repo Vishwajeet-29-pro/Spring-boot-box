@@ -33,7 +33,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.cucumber:cucumber-java:7.20.1")
-    testImplementation("io.cucumber:cucumber-spring:7.20.1")
+    testImplementation("io.cucumber:cucumber-spring:7.21.0")
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.20.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
 //    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
